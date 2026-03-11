@@ -31,3 +31,18 @@ body{
     font-family: "Pixelify Sans", sans-serif;
 
 }
+
+@media (max-width: 600px) {
+    .caution {
+        width: 90vw;
+        height: auto;
+    }
+
+    .caution img {
+        width: 100%;
+    }
+
+    .caution p {
+        font-size: 32px;
+    }
+}
