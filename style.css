@@ -6,23 +6,34 @@ body{
     height:100vh;
     width: auto;
     margin:0;
+    background-color: #f9f9f7;
+    background-image:
+        linear-gradient(to right, #8BAF8A50 1px, transparent 1px),
+        linear-gradient(to bottom, #8BAF8A50 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridScroll 8s linear infinite;
+}
+
+@keyframes gridScroll {
+    from { background-position: 0 0; }
+    to   { background-position: 200px 200px; } /*this shows the distance it fades too*/
 }
 
 
-.caution{
+/* .caution{ */
     /* border: 2px solid red; */
-    display:flex;
+    /* display:flex;
     margin-top:50px;
     flex-direction: column;
     height: 500px;
     width: 500px;
     align-items: center;
     justify-content: flex-start;
-}
+} */
 
 .caution p{
     display:flex;
-    color: rgb(0, 0, 0);
+    color: #2D5A3D;
     justify-content: center;
     align-items:flex-end;
     font-size:60px;
