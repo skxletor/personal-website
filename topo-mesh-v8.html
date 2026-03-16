@@ -37,6 +37,11 @@ const dpr = window.devicePixelRatio || 1;
 let W, H;
 let points = [];
 
+// let mouseX = -9999, mouseY = -9999;
+// const hoverMap = new Map();   // triKey → t (0–1)
+// const HOVER_SPEED = 0.12;
+// const HOVER_COLOR = { r: 50, g: 50, b: 53 }; // lightest COLOR_STOP
+
 const MAX_SPEED = 0.035;
 
 function resize() {
@@ -162,6 +167,15 @@ function edgeDist(a, b) {
   return Math.sqrt(dx*dx+dy*dy);
 }
 
+// function pointInTriangle(px, py, ax, ay, bx, by, cx, cy) {
+//   const d1 = (px-bx)*(ay-by) - (ax-bx)*(py-by);
+//   const d2 = (px-cx)*(by-cy) - (bx-cx)*(py-cy);
+//   const d3 = (px-ax)*(cy-ay) - (cx-ax)*(py-ay);
+//   const hasNeg = d1<0 || d2<0 || d3<0;
+//   const hasPos = d1>0 || d2>0 || d3>0;
+//   return !(hasNeg && hasPos);
+// }
+
 // === Render ===
 const MAX_EDGE = 160 * dpr;
 
@@ -191,11 +205,22 @@ function frame() {
   const triangles = triangulate(indexed);
 
   // Filled triangles
+  // const activeTris = new Set();
   for (const t of triangles) {
     const [a, b, c] = t.verts;
     const ab = edgeDist(a,b), bc = edgeDist(b,c), ca = edgeDist(c,a);
     const longest = Math.max(ab, bc, ca);
     if (longest > MAX_EDGE) continue;
+
+    // const key = [a.idx, b.idx, c.idx].sort().join(':');
+    // const hovered = pointInTriangle(mouseX, mouseY, a.x, a.y, b.x, b.y, c.x, c.y);
+    // if (hovered) activeTris.add(key);
+
+    // let hoverT = hoverMap.get(key) || 0;
+    // hoverT = hovered
+    //   ? Math.min(1, hoverT + HOVER_SPEED)
+    //   : Math.max(0, hoverT - HOVER_SPEED);
+    // if (hoverT > 0) hoverMap.set(key, hoverT); else hoverMap.delete(key);
 
     // Average the three vertex colors for smooth gradient across mesh
     const ca1 = getPointColor(points[a.idx]);
@@ -207,7 +232,13 @@ function frame() {
       b: (ca1.b + cb1.b + cc1.b) / 3,
     };
 
+    // Blend toward hover color
+    // if (hoverT > 0) {
+    //   avg = lerpColor(avg, HOVER_COLOR, hoverT);
+    // }
+
     const fillAlpha = (1 - longest / MAX_EDGE) * 0.045;
+    // const fillAlpha = baseFillAlpha + hoverT * 0.28;
     ctx.fillStyle = `rgba(${avg.r|0},${avg.g|0},${avg.b|0},${fillAlpha})`;
     ctx.beginPath();
     ctx.moveTo(a.x, a.y);
@@ -236,7 +267,7 @@ function frame() {
       const mid = { r: (c1.r+c2.r)/2, g: (c1.g+c2.g)/2, b: (c1.b+c2.b)/2 };
       const alpha = (1 - d / MAX_EDGE) * 0.4;
 
-      ctx.strokeStyle = `rgba(0,0,0,${alpha})`;
+      ctx.strokeStyle = `rgba(50,50,50,${alpha})`;/*THIS LINE CHANGES THE LINE COLORS*/
       ctx.lineWidth = 0.8 * dpr;
       ctx.beginPath();
       ctx.moveTo(e1.x, e1.y);
@@ -247,6 +278,13 @@ function frame() {
 
   requestAnimationFrame(frame);
 }
+
+// canvas.addEventListener('mousemove', e => {
+//   const rect = canvas.getBoundingClientRect();
+//   mouseX = (e.clientX - rect.left) * dpr;
+//   mouseY = (e.clientY - rect.top) * dpr;
+// });
+// canvas.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
 
 init();
 window.addEventListener('resize', () => { init(); });

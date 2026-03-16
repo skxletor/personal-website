@@ -30,7 +30,7 @@
     --text:          #A8CCA7;
     --border:        transparent/*#8BAF8A*/;
     --accent:        #273f30;
-    --surface:       #111211;
+    --surface:       #111211;/*rgba(17,17,17); this is the blocks color*/
     --surface-hover: #222D22;
     --overlay-bg:    rgba(0, 0, 0, 0.55);
 }
