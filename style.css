@@ -20,17 +20,47 @@
     border: 2px solid red;
 } */
 
-body{
-    height:100vh;
+/* ── Theme variables ──────────────────────────────────── */
+
+:root {
+    /* Dark mode (default) */
+    --bg:            #1d1d1d;
+    --grid:          rgba(139, 175, 138, 0.12);
+    --header-bg:     #111211;
+    --text:          #A8CCA7;
+    --border:        #8BAF8A;
+    --accent:        #273f30;
+    --surface:       #111211;
+    --surface-hover: #222D22;
+    --overlay-bg:    rgba(139, 175, 138, 0.10);
+}
+
+:root[data-theme="light"] {
+    --bg:            #F5F5F0;
+    --grid:          rgba(139, 175, 138, 0.31);
+    --header-bg:     #ffffff;
+    --text:          #2D5A3D;
+    --border:        #2D5A3D;
+    --accent:        #8BAF8A;
+    --surface:       #ffffff;
+    --surface-hover: #f7f7f2;
+    --overlay-bg:    rgba(45, 90, 61, 0.25);
+}
+
+/* ── Base ─────────────────────────────────────────────── */
+
+body {
+    height: 100vh;
     width: auto;
-    margin:0;
-    background-color: #F5F5F0;
+    margin: 0;
+    background-color: var(--bg);
     background-image:
-        linear-gradient(to right, #8BAF8A50 1px, transparent 1px),
-        linear-gradient(to bottom, #8BAF8A50 1px, transparent 1px);
+        linear-gradient(to right, var(--grid) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
     background-size: 40px 40px;
     background-position: var(--grid-offset, 0px) var(--grid-offset, 0px);
-    animation: gridScroll 8s linear infinite;
+    animation: gridScroll 20s linear infinite;
+    transition: background-color 0.25s ease;
 }
 
 @keyframes gridScroll {
@@ -39,10 +69,10 @@ body{
 }
 
 
-.caution{
+.caution {
     /* border: 2px solid red; */
 
-    display:flex;
+    display: flex;
     justify-content: center;
     /* margin-top:50px;
     flex-direction: column;
@@ -52,26 +82,27 @@ body{
     justify-content: flex-start; */
 }
 
-.caution p{
-    display:flex;
-    color: #2D5A3D;
-    align-items:flex-end;
-    font-size:60px;
-    font-weight:900;
+.caution p {
+    display: flex;
+    color: var(--text);
+    align-items: flex-end;
+    font-size: 60px;
+    font-weight: 900;
     text-align: center;
     font-family: "Roboto Condensed", sans-serif;
-
 }
 
-#header{
+/* ── Header ───────────────────────────────────────────── */
+
+#header {
     position: sticky;
     top: 0;
     z-index: 100;
     width: auto;
     height: 50px;
-    border-bottom:6px double #2D5A3D;
-    background-color: #ffffff;
-    color: #2D5A3D;
+    border-bottom: 6px double var(--border);
+    background-color: var(--header-bg);
+    color: var(--text);
     font-family: "Roboto Condensed", sans-serif;
     font-size: clamp(14px, 3.5vw, 24px);
     font-weight: 475;
@@ -81,27 +112,52 @@ body{
     padding-left: 10px;
     padding-right: 20px;
     white-space: nowrap;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
-#nav{
+#nav {
     display: flex;
     gap: clamp(8px, 2.5vw, 24px);
+    align-items: center;
 }
 
-#nav a{
-    color: #2D5A3D;
+#nav a {
+    color: var(--text);
     text-decoration: none;
     font-family: "Roboto Condensed", sans-serif;
     font-size: clamp(11px, 2.5vw, 16px);
     font-weight: 500;
     white-space: nowrap;
+    transition: color 0.25s ease;
 }
 
-#nav a:hover{
+#nav a:hover {
     text-decoration: underline;
 }
 
+#theme-toggle {
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: color 0.25s ease;
+    opacity: 0.8;
+}
 
+#theme-toggle:hover {
+    opacity: 1;
+}
+
+#theme-toggle svg {
+    width: clamp(13px, 2vw, 16px);
+    height: clamp(13px, 2vw, 16px);
+    display: block;
+}
+
+/* ── Home page ────────────────────────────────────────── */
 
 .home-container {
     display: flex;
@@ -118,9 +174,10 @@ body{
     box-sizing: border-box;
     padding-right: 10px;
     padding-bottom: 10px;
-    
-    background-color: #8BAF8A;
+    background-color: var(--accent);
+    transition: background-color 0.25s ease;
 }
+
 .home-container-right {
     margin-top: 200px;
     margin-left: auto;
@@ -132,27 +189,31 @@ body{
     box-sizing: border-box;
     padding-bottom: 10px;
     padding-left: 10px;
-    background-color: #8BAF8A;
+    background-color: var(--accent);
+    transition: background-color 0.25s ease;
 }
 
 .home-top-left {
     width: 100%;
     height: 100%;
-    background-color: #ffffff;
-    color: #2D5A3D;
+    background-color: var(--surface);
+    color: var(--text);
     font-size: 100px;
     font-family: "Roboto Condensed", sans-serif;
     font-weight: 1000;
-    border: 2px #2D5A3D solid ;
+    border: 2px var(--border) solid;
     border-left: 0;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
 .home-bottom-right {
     width: 100%;
     height: 100%;
-    background-color: #ffffff;
-    border: 2px #2D5A3D solid;
+    background-color: var(--surface);
+    color: var(--text);
+    border: 2px var(--border) solid;
     border-right: 0;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 /* ── Projects page ────────────────────────────────────── */
@@ -174,46 +235,49 @@ body{
 .project-card-4 { grid-column: 2 / 3; grid-row: 3 / 5; }
 
 .project-card {
-    background-color: #8BAF8A;
+    background-color: var(--accent);
     cursor: pointer;
     padding-right: 8px;
     padding-bottom: 8px;
+    transition: background-color 0.25s ease;
 }
 
 .card-inner {
     width: 100%;
     height: 100%;
-    background-color: #ffffff;
-    border: 2px #2D5A3D solid;
+    background-color: var(--surface);
+    border: 2px var(--border) solid;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     padding: 12px;
-    transition: background-color 0.15s ease;
+    transition: background-color 0.15s ease, border-color 0.25s ease;
 }
 
 .project-card:hover .card-inner {
-    background-color: #f7f7f2;
+    background-color: var(--surface-hover);
 }
 
 .card-title {
     font-family: "Roboto Condensed", sans-serif;
     font-size: 28px;
     font-weight: 700;
-    color: #2D5A3D;
+    color: var(--text);
     margin: 0;
+    transition: color 0.25s ease;
 }
 
 .card-tag {
     font-family: "Roboto Condensed", sans-serif;
     font-size: 12px;
     font-weight: 600;
-    color: #2D5A3D;
+    color: var(--text);
     margin: 0 0 5px 0;
     opacity: 0.6;
     text-transform: uppercase;
     letter-spacing: 1.5px;
+    transition: color 0.25s ease;
 }
 
 /* ── Project overlay ──────────────────────────────────── */
@@ -221,7 +285,7 @@ body{
 .project-overlay {
     position: fixed;
     inset: 0;
-    background-color: rgba(45, 90, 61, 0.25);
+    background-color: var(--overlay-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -237,13 +301,13 @@ body{
 }
 
 .overlay-outer {
-    background-color: #8BAF8A;
+    background-color: var(--accent);
     padding-right: 10px;
     padding-bottom: 10px;
     width: 85vw;
     height: 85vh;
     transform: scale(0.96);
-    transition: transform 0.25s ease;
+    transition: transform 0.25s ease, background-color 0.25s ease;
 }
 
 .project-overlay.visible .overlay-outer {
@@ -251,12 +315,13 @@ body{
 }
 
 .overlay-inner {
-    background-color: #ffffff;
-    border: 2px #2D5A3D solid;
+    background-color: var(--surface);
+    border: 2px var(--border) solid;
     padding: 32px;
     position: relative;
     height: 100%;
     box-sizing: border-box;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .overlay-close {
@@ -266,13 +331,13 @@ body{
     background: none;
     border: none;
     font-size: 24px;
-    color: #2D5A3D;
+    color: var(--text);
     cursor: pointer;
     font-family: "Roboto Condensed", sans-serif;
     line-height: 1;
     padding: 0;
     opacity: 0.6;
-    transition: opacity 0.15s ease;
+    transition: opacity 0.15s ease, color 0.25s ease;
 }
 
 .overlay-close:hover {
@@ -283,7 +348,7 @@ body{
     font-family: "Roboto Condensed", sans-serif;
     font-size: 12px;
     font-weight: 600;
-    color: #2D5A3D;
+    color: var(--text);
     margin: 0 0 8px 0;
     opacity: 0.6;
     text-transform: uppercase;
@@ -294,7 +359,7 @@ body{
     font-family: "Roboto Condensed", sans-serif;
     font-size: 42px;
     font-weight: 700;
-    color: #2D5A3D;
+    color: var(--text);
     margin: 0 0 20px 0;
 }
 
@@ -302,7 +367,7 @@ body{
     font-family: "Roboto Condensed", sans-serif;
     font-size: 16px;
     font-weight: 400;
-    color: #2D5A3D;
+    color: var(--text);
     line-height: 1.6;
     margin: 0;
 }

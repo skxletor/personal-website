@@ -1,6 +1,6 @@
 // Keep grid background animation in sync across page navigations
 (function () {
-    const DURATION = 8000; // must match CSS animation duration (8s)
+    const DURATION = 20000; // must match CSS animation duration (8s)
     const DISTANCE = 200;  // must match CSS animation distance (200px)
 
     if (!sessionStorage.getItem('bgStart')) {
