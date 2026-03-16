@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -26,11 +26,11 @@ const ctx = canvas.getContext('2d');
 
 // Neutral grays — no color tint
 const COLOR_STOPS = [
-  { r: 35, g: 35, b: 37 },   // dark charcoal
-  { r: 45, g: 45, b: 48 },   // medium charcoal
-  { r: 28, g: 28, b: 30 },   // near black
-  { r: 50, g: 50, b: 53 },   // lighter gray
-  { r: 22, g: 22, b: 24 },   // deepest
+  { r: 17, g: 17, b: 17 },   // dark charcoal
+  { r: 40, g: 40, b: 41 },   // medium charcoal
+  { r: 13, g: 13, b: 13 },   // near black
+  { r: 45, g: 45, b: 46 },   // lighter gray
+  { r: 0, g: 0, b: 0},   // deepest
 ];
 
 const dpr = window.devicePixelRatio || 1;
@@ -43,6 +43,13 @@ let points = [];
 // const HOVER_COLOR = { r: 50, g: 50, b: 53 }; // lightest COLOR_STOP
 
 const MAX_SPEED = 0.035;
+
+// Cursor influence
+let mouseX = -9999, mouseY = -9999;
+let prevMouseX = -9999, prevMouseY = -9999;
+let cursorVX = 0, cursorVY = 0;
+const CURSOR_RADIUS = 350;   // logical px — scaled by dpr at use
+const CURSOR_STRENGTH = 0.00065; // force scale per px/frame of cursor speed
 
 function resize() {
   W = canvas.width = window.innerWidth * dpr;
@@ -182,8 +189,44 @@ const MAX_EDGE = 160 * dpr;
 function frame() {
   ctx.clearRect(0, 0, W, H);
 
+  // Cursor velocity (px/frame, smoothed + decayed)
+  if (prevMouseX > -9000 && mouseX > -9000) {
+    cursorVX += ((mouseX - prevMouseX) - cursorVX) * 0.35;
+    cursorVY += ((mouseY - prevMouseY) - cursorVY) * 0.35;
+  }
+  cursorVX *= 0.88;
+  cursorVY *= 0.88;
+  prevMouseX = mouseX;
+  prevMouseY = mouseY;
+
+  const cursorSpeed = Math.sqrt(cursorVX * cursorVX + cursorVY * cursorVY);
+  const r = CURSOR_RADIUS * dpr;
+  const maxPointSpeed = MAX_SPEED * dpr * 7;
+
   // Update positions and colors
   for (const p of points) {
+    // Apply cursor influence to nearby points
+    if (mouseX > -9000 && cursorSpeed > 0.1) {
+      const dx = p.x - mouseX;
+      const dy = p.y - mouseY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < r) {
+        const falloff = 1 - dist / r;
+        const force = falloff * CURSOR_STRENGTH;
+        p.vx += cursorVX * force;
+        p.vy += cursorVY * force;
+        // Clamp to avoid runaway
+        const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (spd > maxPointSpeed) {
+          p.vx = p.vx / spd * maxPointSpeed;
+          p.vy = p.vy / spd * maxPointSpeed;
+        }
+      }
+    }
+    // Gentle drag back toward natural speed when above MAX_SPEED
+    const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+    if (spd > MAX_SPEED * dpr) p.vx *= 0.997, p.vy *= 0.997;
+
     p.x += p.vx;
     p.y += p.vy;
     const margin = 200 * dpr;
@@ -267,7 +310,7 @@ function frame() {
       const mid = { r: (c1.r+c2.r)/2, g: (c1.g+c2.g)/2, b: (c1.b+c2.b)/2 };
       const alpha = (1 - d / MAX_EDGE) * 0.4;
 
-      ctx.strokeStyle = `rgba(50,50,50,${alpha})`;/*THIS LINE CHANGES THE LINE COLORS*/
+      ctx.strokeStyle = `rgba(60,60,60,${alpha})`;/*THIS LINE CHANGES THE LINE COLORS*/
       ctx.lineWidth = 0.8 * dpr;
       ctx.beginPath();
       ctx.moveTo(e1.x, e1.y);
@@ -279,16 +322,20 @@ function frame() {
   requestAnimationFrame(frame);
 }
 
-// canvas.addEventListener('mousemove', e => {
-//   const rect = canvas.getBoundingClientRect();
-//   mouseX = (e.clientX - rect.left) * dpr;
-//   mouseY = (e.clientY - rect.top) * dpr;
-// });
-// canvas.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  mouseX = (e.clientX - rect.left) * dpr;
+  mouseY = (e.clientY - rect.top) * dpr;
+});
+canvas.addEventListener('mouseleave', () => {
+  mouseX = -9999; mouseY = -9999;
+  prevMouseX = -9999; prevMouseY = -9999;
+  cursorVX = 0; cursorVY = 0;
+});
 
 init();
 window.addEventListener('resize', () => { init(); });
 frame();
 </script>
 </body>
-</html>
+</html> -->

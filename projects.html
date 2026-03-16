@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="./imgs/favicon.png">
     <script>(function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
-    <script src="bg-sync.js"></script>
     <script src="theme.js"></script>
 </head>
 <body>
+    <canvas id="bg-canvas"></canvas>
     <header id="header">
         <span>Justin Richardson</span>
         <nav id="nav">
@@ -113,5 +113,6 @@
             if (e.key === 'Escape') overlay.classList.remove('visible');
         });
     </script>
+    <script src="topo-mesh.js"></script>
 </body>
 </html>

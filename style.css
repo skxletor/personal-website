@@ -1,16 +1,8 @@
 @font-face {
-    font-family: "Roboto Condensed";
-    src: url("./fonts/RobotoCondensed-VariableFont_wght.ttf") format("truetype");
-    font-weight: 100 900;
+    font-family: "Space Grotesk";
+    src: url("./fonts/SpaceGrotesk-VariableFont_wght.ttf") format("truetype");
+    font-weight: 300 700;
     font-style: normal;
-    font-display: block;
-}
-
-@font-face {
-    font-family: "Roboto Condensed";
-    src: url("./fonts/RobotoCondensed-Italic-VariableFont_wght.ttf") format("truetype");
-    font-weight: 100 900;
-    font-style: italic;
     font-display: block;
 }
 
@@ -24,24 +16,24 @@
 
 :root {
     /* Dark mode (default) */
-    --bg:            #1d1d1d;
+    --bg:            #111111;
     --grid:          rgba(139, 175, 138, 0.12);
-    --header-bg:     #111211;
-    --text:          #A8CCA7;
+    --header-bg:     transparent/*#111211*/;
+    --text:          #ffffff;
     --border:        transparent/*#8BAF8A*/;
-    --accent:        #273f30;
+    --accent:        #ffffff96;
     --surface:       #111211;/*rgba(17,17,17); this is the blocks color*/
-    --surface-hover: #222D22;
+    --surface-hover: #4a4a4a;
     --overlay-bg:    rgba(0, 0, 0, 0.55);
 }
 
 :root[data-theme="light"] {
     --bg:            #F5F5F0;
     --grid:          rgba(139, 175, 138, 0.31);
-    --header-bg:     #ffffff;
-    --text:          #2D5A3D;
+    --header-bg:     transparent/*#ffffff*/;
+    --text:          rgb(17,17,17);
     --border:        #2D5A3D;
-    --accent:        #8BAF8A;
+    --accent:        #000000;
     --surface:       #ffffff;
     --surface-hover: #f7f7f2;
     --overlay-bg:    rgba(0, 0, 0, 0.45);
@@ -54,18 +46,16 @@ body {
     width: auto;
     margin: 0;
     background-color: var(--bg);
-    background-image:
-        linear-gradient(to right, var(--grid) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-position: var(--grid-offset, 0px) var(--grid-offset, 0px);
-    animation: gridScroll 20s linear infinite;
     transition: background-color 0.25s ease;
 }
 
-@keyframes gridScroll {
-    from { background-position: var(--grid-offset, 0px) var(--grid-offset, 0px); }
-    to   { background-position: calc(var(--grid-offset, 0px) + 200px) calc(var(--grid-offset, 0px) + 200px); }
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 
@@ -89,7 +79,7 @@ body {
     font-size: 60px;
     font-weight: 900;
     text-align: center;
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
 }
 
 /* ── Header ───────────────────────────────────────────── */
@@ -102,9 +92,9 @@ body {
     height: 50px;
     background-color: var(--header-bg);
     color: var(--text);
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: clamp(14px, 3.5vw, 24px);
-    font-weight: 475;
+    font-weight: 675;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -123,9 +113,9 @@ body {
 #nav a {
     color: var(--text);
     text-decoration: none;
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: clamp(11px, 2.5vw, 16px);
-    font-weight: 500;
+    font-weight: 300;
     white-space: nowrap;
     transition: color 0.25s ease;
 }
@@ -165,49 +155,6 @@ body {
     /* border: 2px solid red; */
 }
 
-.home-container-left {
-    display: flex;
-    align-items: flex-end;
-    width: 675px;
-    height: 500px;
-    box-sizing: border-box;
-}
-
-.home-container-right {
-    margin-top: 200px;
-    margin-left: auto;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    width: 500px;
-    height: 400px;
-    box-sizing: border-box;
-}
-
-.home-top-left {
-    width: 100%;
-    height: 100%;
-    background-color: var(--surface);
-    color: var(--text);
-    font-size: 100px;
-    font-family: "Roboto Condensed", sans-serif;
-    font-weight: 1000;
-    border: 2px var(--border) solid;
-    border-left: 0;
-    box-shadow: 10px 10px 0 0 var(--accent);
-    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.home-bottom-right {
-    width: 100%;
-    height: 100%;
-    background-color: var(--surface);
-    color: var(--text);
-    border: 2px var(--border) solid;
-    border-right: 0;
-    box-shadow: -10px 10px 0 0 var(--accent);
-    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
 
 /* ── Projects page ────────────────────────────────────── */
 
@@ -252,7 +199,7 @@ body {
 }
 
 .card-title {
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: 28px;
     font-weight: 700;
     color: var(--text);
@@ -261,7 +208,7 @@ body {
 }
 
 .card-tag {
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: 12px;
     font-weight: 600;
     color: var(--text);
@@ -323,7 +270,7 @@ body {
     font-size: 24px;
     color: var(--text);
     cursor: pointer;
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     line-height: 1;
     padding: 0;
     opacity: 0.6;
@@ -335,7 +282,7 @@ body {
 }
 
 .overlay-tag {
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: 12px;
     font-weight: 600;
     color: var(--text);
@@ -346,7 +293,7 @@ body {
 }
 
 .overlay-title {
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: 42px;
     font-weight: 700;
     color: var(--text);
@@ -354,7 +301,7 @@ body {
 }
 
 .overlay-description {
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: 16px;
     font-weight: 400;
     color: var(--text);
@@ -369,7 +316,7 @@ body {
 }
 
 .exp-heading {
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: 13px;
     font-weight: 600;
     letter-spacing: 2px;
@@ -386,7 +333,7 @@ body {
 }
 
 .box-num {
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: 72px;
     font-weight: 900;
     color: var(--text);
@@ -398,7 +345,7 @@ body {
 }
 
 .box-name {
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     font-size: 20px;
     font-weight: 700;
     color: var(--text);
@@ -542,23 +489,7 @@ body {
         margin-top: 30px;
     }
 
-    .home-container-left {
-        width: 80%;
-        height: 280px;
-    }
-
-    .home-container-right {
-        width: 80%;
-        height: 220px;
-        margin-top: 30px;
-        margin-left: auto;
-    }
-
-    .home-top-left {
-        font-size: 48px;
-    }
-
-    .projects-grid {
+.projects-grid {
         grid-template-columns: 1fr;
         grid-template-rows: none;
         margin: 20px;
