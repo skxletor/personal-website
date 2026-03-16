@@ -29,10 +29,8 @@ const MAX_SPEED = 0.035;
 const MAX_EDGE  = 160 * dpr;
 
 function resize() {
-  W = canvas.width  = window.innerWidth  * dpr;
-  H = canvas.height = window.innerHeight * dpr;
-  canvas.style.width  = window.innerWidth  + 'px';
-  canvas.style.height = window.innerHeight + 'px';
+  W = canvas.width  = canvas.offsetWidth  * dpr;
+  H = canvas.height = canvas.offsetHeight * dpr;
 }
 
 function lerpColor(a, b, t) {
