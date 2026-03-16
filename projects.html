@@ -18,5 +18,97 @@
             <a href="personal.html">Personal</a>
         </nav>
     </header>
+
+    <div class="projects-grid">
+        <!-- Card 1: Large (2 cols × 2 rows) -->
+        <div class="project-card project-card-1" data-project="1">
+            <div class="card-inner">
+                <p class="card-tag">Web Development</p>
+                <h3 class="card-title">Project Alpha</h3>
+            </div>
+        </div>
+        <!-- Card 2: Tall (1 col × 3 rows) -->
+        <div class="project-card project-card-2" data-project="2">
+            <div class="card-inner">
+                <p class="card-tag">Machine Learning</p>
+                <h3 class="card-title">Project Beta</h3>
+            </div>
+        </div>
+        <!-- Card 3: Medium (1 col × 2 rows) -->
+        <div class="project-card project-card-3" data-project="3">
+            <div class="card-inner">
+                <p class="card-tag">Systems</p>
+                <h3 class="card-title">Project Gamma</h3>
+            </div>
+        </div>
+        <!-- Card 4: Small (1 col × 1 row) -->
+        <div class="project-card project-card-4" data-project="4">
+            <div class="card-inner">
+                <p class="card-tag">Design</p>
+                <h3 class="card-title">Project Delta</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project detail overlay -->
+    <div class="project-overlay" id="project-overlay">
+        <div class="overlay-outer">
+            <div class="overlay-inner">
+                <button class="overlay-close" id="overlay-close">×</button>
+                <p class="overlay-tag" id="overlay-tag"></p>
+                <h2 class="overlay-title" id="overlay-title"></h2>
+                <p class="overlay-description" id="overlay-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const projectData = {
+            '1': {
+                tag: 'Web Development',
+                title: 'Project Alpha',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio, et tempus feugiat.'
+            },
+            '2': {
+                tag: 'Machine Learning',
+                title: 'Project Beta',
+                description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum.'
+            },
+            '3': {
+                tag: 'Systems',
+                title: 'Project Gamma',
+                description: 'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.'
+            },
+            '4': {
+                tag: 'Design',
+                title: 'Project Delta',
+                description: 'Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue.'
+            }
+        };
+
+        const overlay = document.getElementById('project-overlay');
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const data = projectData[card.dataset.project];
+                document.getElementById('overlay-tag').textContent = data.tag;
+                document.getElementById('overlay-title').textContent = data.title;
+                document.getElementById('overlay-description').textContent = data.description;
+                overlay.classList.add('visible');
+            });
+        });
+
+        document.getElementById('overlay-close').addEventListener('click', () => {
+            overlay.classList.remove('visible');
+        });
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) overlay.classList.remove('visible');
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') overlay.classList.remove('visible');
+        });
+    </script>
 </body>
 </html>
