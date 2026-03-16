@@ -27,12 +27,13 @@ body{
         linear-gradient(to right, #8BAF8A50 1px, transparent 1px),
         linear-gradient(to bottom, #8BAF8A50 1px, transparent 1px);
     background-size: 40px 40px;
+    background-position: var(--grid-offset, 0px) var(--grid-offset, 0px);
     animation: gridScroll 8s linear infinite;
 }
 
 @keyframes gridScroll {
-    from { background-position: 0 0; }
-    to   { background-position: 200px 200px; } /*this shows the distance it fades to*/
+    from { background-position: var(--grid-offset, 0px) var(--grid-offset, 0px); }
+    to   { background-position: calc(var(--grid-offset, 0px) + 200px) calc(var(--grid-offset, 0px) + 200px); }
 }
 
 
