@@ -342,10 +342,31 @@ body {
         font-size: 32px;
     }
 
-    .home-container {
-        flex-direction: column;
-        margin-top: 30px;
+    #header {
+        height: 40px;
+        padding-left: 8px;
+        padding-right: 8px;
+        font-size: 12px;
     }
 
+    #header > span {
+        font-size: 12px;
+        flex-shrink: 0;
+    }
 
+    #nav {
+        gap: 8px;
+        overflow: hidden;
+    }
+
+    #nav a {
+        font-size: 10px;
+    }
+
+    .home-container {
+        height: calc(100svh - 40px);
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
 }
