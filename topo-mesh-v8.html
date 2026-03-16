@@ -1,0 +1,341 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topographical Triangle Mesh</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #111114;
+    overflow: hidden;
+  }
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Neutral grays — no color tint
+const COLOR_STOPS = [
+  { r: 17, g: 17, b: 17 },   // dark charcoal
+  { r: 40, g: 40, b: 41 },   // medium charcoal
+  { r: 13, g: 13, b: 13 },   // near black
+  { r: 45, g: 45, b: 46 },   // lighter gray
+  { r: 0, g: 0, b: 0},   // deepest
+];
+
+const dpr = window.devicePixelRatio || 1;
+let W, H;
+let points = [];
+
+// let mouseX = -9999, mouseY = -9999;
+// const hoverMap = new Map();   // triKey → t (0–1)
+// const HOVER_SPEED = 0.12;
+// const HOVER_COLOR = { r: 50, g: 50, b: 53 }; // lightest COLOR_STOP
+
+const MAX_SPEED = 0.035;
+
+// Cursor influence
+let mouseX = -9999, mouseY = -9999;
+let prevMouseX = -9999, prevMouseY = -9999;
+let cursorVX = 0, cursorVY = 0;
+const CURSOR_RADIUS = 350;   // logical px — scaled by dpr at use
+const CURSOR_STRENGTH = 0.00065; // force scale per px/frame of cursor speed
+
+function resize() {
+  W = canvas.width = window.innerWidth * dpr;
+  H = canvas.height = window.innerHeight * dpr;
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+}
+
+// Smooth eased lerp between two colors (easeInOut for gentle transitions)
+function lerpColor(a, b, t) {
+  // Smoothstep easing so transitions are gentle at both ends
+  const s = t * t * (3 - 2 * t);
+  return {
+    r: a.r + (b.r - a.r) * s,
+    g: a.g + (b.g - a.g) * s,
+    b: a.b + (b.b - a.b) * s,
+  };
+}
+
+function init() {
+  resize();
+  points = [];
+
+  const spacing = 80 * dpr;
+  const cols = Math.ceil(W / spacing) + 4;
+  const rows = Math.ceil(H / spacing) + 4;
+  const offsetX = -2 * spacing;
+  const offsetY = -2 * spacing;
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const jitterX = (Math.random() - 0.5) * spacing * 0.7;
+      const jitterY = (Math.random() - 0.5) * spacing * 0.7;
+
+      // Each point slowly cycles through color stops
+      const colorIdx = Math.floor(Math.random() * COLOR_STOPS.length);
+      const nextIdx = (colorIdx + 1) % COLOR_STOPS.length;
+
+      points.push({
+        x: offsetX + c * spacing + jitterX,
+        y: offsetY + r * spacing + jitterY,
+        vx: (Math.random() - 0.5) * MAX_SPEED * dpr,
+        vy: (Math.random() - 0.5) * MAX_SPEED * dpr,
+        colorIdx: colorIdx,
+        nextColorIdx: nextIdx,
+        colorT: Math.random(),                    // current blend position 0-1
+        colorSpeed: 0.00008 + Math.random() * 0.00015, // extremely slow fade
+      });
+    }
+  }
+}
+
+function getPointColor(p) {
+  return lerpColor(COLOR_STOPS[p.colorIdx], COLOR_STOPS[p.nextColorIdx], p.colorT);
+}
+
+// === Delaunay Triangulation (Bowyer-Watson) ===
+function triangulate(pts) {
+  const margin = 2000 * dpr;
+  const st = [
+    { x: -margin, y: -margin, idx: -1 },
+    { x: W + margin * 2, y: -margin, idx: -2 },
+    { x: W / 2, y: H + margin * 2, idx: -3 },
+  ];
+
+  let triangles = [{ verts: [st[0], st[1], st[2]], cc: null }];
+  computeCC(triangles[0]);
+
+  for (const p of pts) {
+    let badTriangles = [];
+    for (const t of triangles) {
+      if (inCircumcircleCC(p, t.cc)) badTriangles.push(t);
+    }
+
+    let edges = [];
+    for (const t of badTriangles) {
+      for (let i = 0; i < 3; i++) {
+        const a = t.verts[i];
+        const b = t.verts[(i+1)%3];
+        let shared = false;
+        for (const other of badTriangles) {
+          if (other === t) continue;
+          for (let j = 0; j < 3; j++) {
+            const oa = other.verts[j];
+            const ob = other.verts[(j+1)%3];
+            if ((a === oa && b === ob) || (a === ob && b === oa)) { shared = true; break; }
+          }
+          if (shared) break;
+        }
+        if (!shared) edges.push([a, b]);
+      }
+    }
+
+    triangles = triangles.filter(t => !badTriangles.includes(t));
+    for (const [a, b] of edges) {
+      const nt = { verts: [a, b, p], cc: null };
+      computeCC(nt);
+      triangles.push(nt);
+    }
+  }
+
+  return triangles.filter(t => t.verts.every(v => v.idx >= 0));
+}
+
+function computeCC(t) {
+  const [a, b, c] = t.verts;
+  const D = 2 * (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y));
+  if (Math.abs(D) < 1e-10) { t.cc = { cx: 0, cy: 0, r2: Infinity }; return; }
+  const ux = ((a.x*a.x+a.y*a.y)*(b.y-c.y)+(b.x*b.x+b.y*b.y)*(c.y-a.y)+(c.x*c.x+c.y*c.y)*(a.y-b.y))/D;
+  const uy = ((a.x*a.x+a.y*a.y)*(c.x-b.x)+(b.x*b.x+b.y*b.y)*(a.x-c.x)+(c.x*c.x+c.y*c.y)*(b.x-a.x))/D;
+  const dx = a.x-ux, dy = a.y-uy;
+  t.cc = { cx: ux, cy: uy, r2: dx*dx+dy*dy };
+}
+
+function inCircumcircleCC(p, cc) {
+  const dx = p.x-cc.cx, dy = p.y-cc.cy;
+  return dx*dx+dy*dy < cc.r2;
+}
+
+function edgeDist(a, b) {
+  const dx = a.x-b.x, dy = a.y-b.y;
+  return Math.sqrt(dx*dx+dy*dy);
+}
+
+// function pointInTriangle(px, py, ax, ay, bx, by, cx, cy) {
+//   const d1 = (px-bx)*(ay-by) - (ax-bx)*(py-by);
+//   const d2 = (px-cx)*(by-cy) - (bx-cx)*(py-cy);
+//   const d3 = (px-ax)*(cy-ay) - (cx-ax)*(py-ay);
+//   const hasNeg = d1<0 || d2<0 || d3<0;
+//   const hasPos = d1>0 || d2>0 || d3>0;
+//   return !(hasNeg && hasPos);
+// }
+
+// === Render ===
+const MAX_EDGE = 160 * dpr;
+
+function frame() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Cursor velocity (px/frame, smoothed + decayed)
+  if (prevMouseX > -9000 && mouseX > -9000) {
+    cursorVX += ((mouseX - prevMouseX) - cursorVX) * 0.35;
+    cursorVY += ((mouseY - prevMouseY) - cursorVY) * 0.35;
+  }
+  cursorVX *= 0.88;
+  cursorVY *= 0.88;
+  prevMouseX = mouseX;
+  prevMouseY = mouseY;
+
+  const cursorSpeed = Math.sqrt(cursorVX * cursorVX + cursorVY * cursorVY);
+  const r = CURSOR_RADIUS * dpr;
+  const maxPointSpeed = MAX_SPEED * dpr * 7;
+
+  // Update positions and colors
+  for (const p of points) {
+    // Apply cursor influence to nearby points
+    if (mouseX > -9000 && cursorSpeed > 0.1) {
+      const dx = p.x - mouseX;
+      const dy = p.y - mouseY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < r) {
+        const falloff = 1 - dist / r;
+        const force = falloff * CURSOR_STRENGTH;
+        p.vx += cursorVX * force;
+        p.vy += cursorVY * force;
+        // Clamp to avoid runaway
+        const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (spd > maxPointSpeed) {
+          p.vx = p.vx / spd * maxPointSpeed;
+          p.vy = p.vy / spd * maxPointSpeed;
+        }
+      }
+    }
+    // Gentle drag back toward natural speed when above MAX_SPEED
+    const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+    if (spd > MAX_SPEED * dpr) p.vx *= 0.997, p.vy *= 0.997;
+
+    p.x += p.vx;
+    p.y += p.vy;
+    const margin = 200 * dpr;
+    if (p.x < -margin) p.vx = Math.abs(p.vx);
+    if (p.x > W + margin) p.vx = -Math.abs(p.vx);
+    if (p.y < -margin) p.vy = Math.abs(p.vy);
+    if (p.y > H + margin) p.vy = -Math.abs(p.vy);
+
+    // Advance color blend
+    p.colorT += p.colorSpeed;
+    if (p.colorT >= 1) {
+      p.colorT = 0;
+      p.colorIdx = p.nextColorIdx;
+      p.nextColorIdx = (p.colorIdx + 1 + Math.floor(Math.random() * (COLOR_STOPS.length - 1))) % COLOR_STOPS.length;
+    }
+  }
+
+  const indexed = points.map((p, i) => ({ x: p.x, y: p.y, idx: i }));
+  const triangles = triangulate(indexed);
+
+  // Filled triangles
+  // const activeTris = new Set();
+  for (const t of triangles) {
+    const [a, b, c] = t.verts;
+    const ab = edgeDist(a,b), bc = edgeDist(b,c), ca = edgeDist(c,a);
+    const longest = Math.max(ab, bc, ca);
+    if (longest > MAX_EDGE) continue;
+
+    // const key = [a.idx, b.idx, c.idx].sort().join(':');
+    // const hovered = pointInTriangle(mouseX, mouseY, a.x, a.y, b.x, b.y, c.x, c.y);
+    // if (hovered) activeTris.add(key);
+
+    // let hoverT = hoverMap.get(key) || 0;
+    // hoverT = hovered
+    //   ? Math.min(1, hoverT + HOVER_SPEED)
+    //   : Math.max(0, hoverT - HOVER_SPEED);
+    // if (hoverT > 0) hoverMap.set(key, hoverT); else hoverMap.delete(key);
+
+    // Average the three vertex colors for smooth gradient across mesh
+    const ca1 = getPointColor(points[a.idx]);
+    const cb1 = getPointColor(points[b.idx]);
+    const cc1 = getPointColor(points[c.idx]);
+    const avg = {
+      r: (ca1.r + cb1.r + cc1.r) / 3,
+      g: (ca1.g + cb1.g + cc1.g) / 3,
+      b: (ca1.b + cb1.b + cc1.b) / 3,
+    };
+
+    // Blend toward hover color
+    // if (hoverT > 0) {
+    //   avg = lerpColor(avg, HOVER_COLOR, hoverT);
+    // }
+
+    const fillAlpha = (1 - longest / MAX_EDGE) * 0.045;
+    // const fillAlpha = baseFillAlpha + hoverT * 0.28;
+    ctx.fillStyle = `rgba(${avg.r|0},${avg.g|0},${avg.b|0},${fillAlpha})`;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.lineTo(c.x, c.y);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Edges
+  const drawnEdges = new Set();
+  for (const t of triangles) {
+    const [a, b, c] = t.verts;
+    const edges = [[a,b],[b,c],[c,a]];
+    for (const [e1, e2] of edges) {
+      const key = Math.min(e1.idx,e2.idx) + ':' + Math.max(e1.idx,e2.idx);
+      if (drawnEdges.has(key)) continue;
+      drawnEdges.add(key);
+
+      const d = edgeDist(e1, e2);
+      if (d > MAX_EDGE) continue;
+
+      // Blend edge color from both endpoints
+      const c1 = getPointColor(points[e1.idx]);
+      const c2 = getPointColor(points[e2.idx]);
+      const mid = { r: (c1.r+c2.r)/2, g: (c1.g+c2.g)/2, b: (c1.b+c2.b)/2 };
+      const alpha = (1 - d / MAX_EDGE) * 0.4;
+
+      ctx.strokeStyle = `rgba(60,60,60,${alpha})`;/*THIS LINE CHANGES THE LINE COLORS*/
+      ctx.lineWidth = 0.8 * dpr;
+      ctx.beginPath();
+      ctx.moveTo(e1.x, e1.y);
+      ctx.lineTo(e2.x, e2.y);
+      ctx.stroke();
+    }
+  }
+
+  requestAnimationFrame(frame);
+}
+
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  mouseX = (e.clientX - rect.left) * dpr;
+  mouseY = (e.clientY - rect.top) * dpr;
+});
+canvas.addEventListener('mouseleave', () => {
+  mouseX = -9999; mouseY = -9999;
+  prevMouseX = -9999; prevMouseY = -9999;
+  cursorVX = 0; cursorVY = 0;
+});
+
+init();
+window.addEventListener('resize', () => { init(); });
+frame();
+</script>
+</body>
+</html> -->
