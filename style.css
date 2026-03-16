@@ -40,15 +40,41 @@ body{
     font-size:60px;
     font-weight:900;
     text-align: center;
-    font-family: "Pixelify Sans", sans-serif;
+    font-family: "Roboto Condensed", sans-serif;
 
 }
 
-.header{
+#header{
     width: auto;
     height: 50px;
     border-bottom:6px double #2D5A3D;
     background-color: #F5F5F0;
+    color: #2D5A3D;
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 24px;
+    font-weight: 525;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 20px;
+}
+
+#nav{
+    display: flex;
+    gap: 24px;
+}
+
+#nav a{
+    color: #2D5A3D;
+    text-decoration: none;
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+#nav a:hover{
+    text-decoration: underline;
 }
 
 
