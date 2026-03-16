@@ -1,3 +1,19 @@
+@font-face {
+    font-family: "Roboto Condensed";
+    src: url("./fonts/RobotoCondensed-VariableFont_wght.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: "Roboto Condensed";
+    src: url("./fonts/RobotoCondensed-Italic-VariableFont_wght.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: block;
+}
+
 body{
 
     /* display: flex;
@@ -52,7 +68,7 @@ body{
     color: #2D5A3D;
     font-family: "Roboto Condensed", sans-serif;
     font-size: 24px;
-    font-weight: 525;
+    font-weight: 475;
     display: flex;
     align-items: center;
     justify-content: space-between;
