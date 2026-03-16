@@ -63,7 +63,7 @@ function stepPhysics() {
     if (p.colorT >= 1) {
       p.colorT = 0;
       p.colorIdx = p.nextColorIdx;
-      p.nextColorIdx = (p.colorIdx + 1 + Math.floor(Math.random() * (COLOR_STOPS.length - 1))) % COLOR_STOPS.length;
+      p.nextColorIdx = (p.colorIdx + 1 + Math.floor(p.rand() * (COLOR_STOPS.length - 1))) % COLOR_STOPS.length;
     }
   }
 }
@@ -79,6 +79,7 @@ function init() {
   const offsetX = -2 * spacing;
   const offsetY = -2 * spacing;
 
+  let pointIdx = 0;
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const jitterX = (rand() - 0.5) * spacing * 0.7;
@@ -93,7 +94,9 @@ function init() {
         nextColorIdx: (colorIdx + 1) % COLOR_STOPS.length,
         colorT: rand(),
         colorSpeed: 0.00008 + rand() * 0.00015,
+        rand: makeRand(1000 + pointIdx), // per-point seeded PRNG for deterministic color transitions
       });
+      pointIdx++;
     }
   }
 
@@ -186,7 +189,7 @@ function animate() {
     if (p.colorT >= 1) {
       p.colorT = 0;
       p.colorIdx = p.nextColorIdx;
-      p.nextColorIdx = (p.colorIdx + 1 + Math.floor(Math.random() * (COLOR_STOPS.length - 1))) % COLOR_STOPS.length;
+      p.nextColorIdx = (p.colorIdx + 1 + Math.floor(p.rand() * (COLOR_STOPS.length - 1))) % COLOR_STOPS.length;
     }
   }
 
@@ -233,7 +236,7 @@ function animate() {
       const er = ((ce1.r + ce2.r) / 2) | 0;
       const eg = ((ce1.g + ce2.g) / 2) | 0;
       const eb = ((ce1.b + ce2.b) / 2) | 0;
-      ctx.strokeStyle = `rgba(50,50,50,${alpha})`;
+      ctx.strokeStyle = `rgba(75,75,75,${alpha})`;
       ctx.lineWidth = 0.8 * dpr;
       ctx.beginPath();
       ctx.moveTo(e1.x, e1.y);
