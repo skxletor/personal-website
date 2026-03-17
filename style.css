@@ -210,7 +210,7 @@ body {
     gap: clamp(40px, 6vw, 80px);
     align-items: flex-start;
     box-sizing: border-box;
-    background-color: var(--section-tint);
+    background-color: var(--bg);
     transition: background-color 0.25s ease;
 }
 
@@ -814,7 +814,7 @@ body {
     /* Fades from bg color down into the hero — stops ~30px past the header */
     .safari-grad-top {
         top: 0;
-        height: 70px; /* 40px header + 30px fade past */
+        height: 140px;
         background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
         z-index: 50; /* below header (100), above hero content */
     }
