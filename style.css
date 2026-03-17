@@ -25,7 +25,7 @@
     --surface:       #111211;/*rgba(17,17,17); this is the blocks color*/
     --surface-hover: #4a4a4a;
     --overlay-bg:    rgba(0, 0, 0, 0.55);
-    --section-tint:  rgba(255, 255, 255, 0.03);
+    --section-tint:  rgba(17, 17, 17, 0.75);
     --card-border:       rgba(255, 255, 255, 0.07);
     --card-border-hover: rgba(255, 255, 255, 0.15);
     --card-shadow:       var(--accent);
@@ -41,7 +41,7 @@
     --surface:       #ffffff;
     --surface-hover: #f7f7f2;
     --overlay-bg:    rgba(0, 0, 0, 0.45);
-    --section-tint:  rgba(0, 0, 0, 0.04);
+    --section-tint:  rgba(245, 245, 240, 0.75);
     --card-border:       rgba(0, 0, 0, 0.08);
     --card-border-hover: rgba(0, 0, 0, 0.15);
     --card-shadow:       rgba(0, 0, 0, 0.22);
@@ -210,7 +210,7 @@ body {
     gap: clamp(40px, 6vw, 80px);
     align-items: flex-start;
     box-sizing: border-box;
-    background-color: var(--bg);
+    background-color: var(--section-tint);
     transition: background-color 0.25s ease;
 }
 
