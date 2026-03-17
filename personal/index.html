@@ -140,5 +140,26 @@
     </style>
 
     <script src="../topo-mesh.js"></script>
+    <script>
+    document.querySelector('.login-form').addEventListener('submit', async function() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const response = await fetch('https://login-node-tcxf.onrender.com/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem('token', data.token);
+            window.location.href = '../personal/dashboard.html';
+        } else {
+            alert('Wrong username or password');
+        }
+    });
+</script>
 </body>
 </html>
