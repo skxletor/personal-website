@@ -794,4 +794,47 @@ body {
         min-height: 150px;
     }
 }
+/* ── Mobile Safari edge gradients ────────────────────────── */
+
+.safari-grad {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .safari-grad {
+        display: block;
+    }
+
+    /* Fades from bg color down into the hero — stops ~30px past the header */
+    .safari-grad-top {
+        top: 0;
+        height: 70px; /* 40px header + 30px fade past */
+        background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+        z-index: 50; /* below header (100), above hero content */
+    }
+
+    /* Fades from transparent up into bg color at bottom chrome area */
+    .safari-grad-bottom {
+        bottom: 0;
+        height: 100px;
+        background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+        z-index: 0; /* bio-status-section and footer sit above this */
+    }
+
+    /* Ensure the about section and footer always render above the bottom gradient */
+    .bio-status-section {
+        position: relative;
+        z-index: 1;
+    }
+
+    .site-footer {
+        position: relative;
+        z-index: 1;
+    }
+}
+
 /* test 7 test million */
