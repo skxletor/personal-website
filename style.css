@@ -25,6 +25,7 @@
     --surface:       #111211;/*rgba(17,17,17); this is the blocks color*/
     --surface-hover: #4a4a4a;
     --overlay-bg:    rgba(0, 0, 0, 0.55);
+    --section-tint:  rgba(255, 255, 255, 0.03);
 }
 
 :root[data-theme="light"] {
@@ -37,6 +38,7 @@
     --surface:       #ffffff;
     --surface-hover: #f7f7f2;
     --overlay-bg:    rgba(0, 0, 0, 0.45);
+    --section-tint:  rgba(0, 0, 0, 0.04);
 }
 
 /* ── Base ─────────────────────────────────────────────── */
@@ -188,10 +190,13 @@ body {
 .bio-status-section {
     padding: clamp(64px, 9vw, 120px) clamp(24px, 6vw, 100px);
     border-top: 1px solid rgba(139, 175, 138, 0.15);
+    border-bottom: 1px solid rgba(139, 175, 138, 0.15);
     display: flex;
     gap: clamp(40px, 6vw, 80px);
     align-items: flex-start;
     box-sizing: border-box;
+    background-color: var(--section-tint);
+    transition: background-color 0.25s ease;
 }
 
 .bio-col {
