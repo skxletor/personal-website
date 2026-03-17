@@ -342,10 +342,12 @@ body {
 
 .site-footer {
     border-top: 1px solid rgba(139, 175, 138, 0.15);
+    background-color: var(--surface);
     padding: 32px clamp(24px, 6vw, 100px);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    transition: background-color 0.25s ease;
 }
 
 .footer-copy {
