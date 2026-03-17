@@ -10,6 +10,11 @@
     <script>(function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=t==='dark'?'#111111':'#F5F5F0';})();</script>
     <script src="../theme.js"></script>
     <script src="../bg-sync.js"></script>
+    <script>
+    if (localStorage.getItem('token')) {
+        window.location.href = '../personal/dashboard.html';
+    }
+</script>
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
