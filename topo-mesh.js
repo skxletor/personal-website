@@ -14,6 +14,7 @@ const COLOR_STOPS = [
 const dpr = window.devicePixelRatio || 1;
 let W, H;
 let points = [];
+let frameCount = 0;
 
 // Seeded PRNG (Mulberry32) — ensures identical initial layout on every page load
 function makeRand(seed) {
@@ -98,12 +99,8 @@ function init() {
     }
   }
 
-  // Fast-forward to sync with elapsed session time so mesh never visibly resets on navigation
-  if (!sessionStorage.getItem('bgStart')) {
-    sessionStorage.setItem('bgStart', Date.now());
-  }
-  const elapsed = Date.now() - Number(sessionStorage.getItem('bgStart'));
-  const framesToSkip = Math.min(Math.round((elapsed / 1000) * 60), 36000); // cap at 10 min
+  // Fast-forward to the frame count saved before the last navigation
+  const framesToSkip = Math.min(frameCount, 36000);
   for (let f = 0; f < framesToSkip; f++) stepPhysics();
 }
 
@@ -168,6 +165,8 @@ function edgeDist(a, b) {
 }
 
 function animate() {
+  frameCount++;
+  if (frameCount % 60 === 0) localStorage.setItem('bgFrame', String(frameCount));
   ctx.clearRect(0, 0, W, H);
 
   const margin = 200 * dpr;
@@ -246,8 +245,10 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
+frameCount = parseInt(localStorage.getItem('bgFrame') || '0', 10);
 init();
 window.addEventListener('resize', () => { init(); });
 animate();
+window.addEventListener('pagehide', () => { localStorage.setItem('bgFrame', String(frameCount)); });
 
 })();
