@@ -329,13 +329,9 @@ body {
 /* ───────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
-    body {
-        height: 100dvh;
-        min-height: 100dvh;
-    }
-
     #bg-canvas {
-        height: 100dvh;
+        top: calc(-1 * env(safe-area-inset-top, 0px));
+        height: calc(100% + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
     }
 
     .caution {
@@ -379,4 +375,4 @@ body {
         text-align: center;
     }
 }
-/* test 4 million */
+/* test 5 million */
