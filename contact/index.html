@@ -27,16 +27,46 @@
             <button id="theme-toggle"></button>
         </nav>
     </header>
+
+    <main class="contact-page">
+        <div class="contact-inner">
+
+            <span class="section-label">Contact</span>
+            <h1 class="contact-name">Justin Richardson</h1>
+
+            <div class="contact-edu">
+                <p>Bachelor of Science in Mechanical Engineering &middot; Georgia Institute of Technology Expected Graduation 2029</p>
+            </div>
+
+            <div class="contact-links">
+                <button class="contact-email" onclick="copyEmail(this)">
+                    <span class="contact-email-prefix">personal</span>
+                    <span class="contact-email-text">jr01[at]outlook.com</span>
+                    <span class="contact-email-copied">copied!</span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
     <!-- Footer -->
     <footer class="site-footer">
         <span class="footer-copy">&copy; 2026 Justin Richardson</span>
         <div class="footer-links">
             <a href="https://www.linkedin.com/in/justin-richardson-84366b384/" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="https://www.github.com/torvalds" target="_blank" rel="noopener">GitHub</a>
             <a href="../contact/">Contact</a>
         </div>
     </footer>
 
     <script src="../topo-mesh.js"></script>
+    <script>
+        function copyEmail(btn) {
+            const email = 'jr01' + '@' + 'outlook.com';
+            navigator.clipboard.writeText(email).then(() => {
+                btn.classList.add('copied');
+                setTimeout(() => btn.classList.remove('copied'), 1500);
+            });
+        }
+    </script>
 </body>
 </html>

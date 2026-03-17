@@ -6,6 +6,14 @@
     font-display: block;
 }
 
+@font-face {
+    font-family: "Outfit";
+    src: url("./fonts/Outfit-VariableFont_wght.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: block;
+}
+
 /* show red borders */
 
 /* *{
@@ -109,9 +117,9 @@ body {
     height: 50px;
     background-color: var(--header-bg);
     color: var(--text);
-    font-family: "Space Grotesk", sans-serif;
+    font-family: "Outfit", sans-serif;
     font-size: clamp(14px, 3.5vw, 24px);
-    font-weight: 675;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -178,9 +186,9 @@ body {
 }
 
 .hero-name {
-    font-family: "Space Grotesk", sans-serif;
+    font-family: "Outfit", sans-serif;
     font-size: clamp(52px, 11vw, 130px);
-    font-weight: 700;
+    font-weight: 900;
     color: var(--text);
     margin: 0 0 20px 0;
     line-height: 1.0;
@@ -342,7 +350,7 @@ body {
 
 .site-footer {
     border-top: 1px solid rgba(139, 175, 138, 0.15);
-    background-color: var(--surface);
+    background-color: var(--bg);
     padding: 32px clamp(24px, 6vw, 100px);
     display: flex;
     align-items: center;
@@ -680,6 +688,103 @@ body {
     .site-footer {
         position: relative;
         z-index: 1;
+    }
+}
+
+/* ── Contact page ─────────────────────────────────────── */
+
+.contact-page {
+    min-height: calc(100svh - 50px);
+    display: flex;
+    align-items: center;
+    padding: 0 clamp(24px, 6vw, 100px);
+    box-sizing: border-box;
+}
+
+.contact-inner {
+    max-width: 600px;
+}
+
+.contact-name {
+    font-family: "Outfit", sans-serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 20px 0;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    transition: color 0.25s ease;
+}
+
+.contact-edu {
+    margin-bottom: 36px;
+}
+
+.contact-edu p {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(12px, 1.5vw, 14px);
+    font-weight: 300;
+    color: var(--text);
+    opacity: 0.4;
+    margin: 0;
+    line-height: 1.8;
+    transition: color 0.25s ease;
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-email {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(14px, 2vw, 17px);
+    font-weight: 300;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, color 0.25s ease;
+}
+
+.contact-email:hover {
+    opacity: 1;
+}
+
+.contact-email-prefix {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    opacity: 0.45;
+    flex-shrink: 0;
+}
+
+.contact-email-copied {
+    display: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    opacity: 0.45;
+}
+
+.contact-email.copied .contact-email-text {
+    display: none;
+}
+
+.contact-email.copied .contact-email-copied {
+    display: inline;
+}
+
+@media (max-width: 768px) {
+    .contact-page {
+        min-height: calc(100svh - 40px);
+        padding: 0 20px;
     }
 }
 
