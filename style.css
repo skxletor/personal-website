@@ -30,7 +30,7 @@
     --border:        transparent/*#8BAF8A*/;
     --accent:        #ffffff96;
     --surface:       #111211;/*rgba(17,17,17); this is the blocks color*/
-    --surface-hover: #4a4a4a;
+    --surface-hover: #222222;
     --overlay-bg:    rgba(0, 0, 0, 0.55);
     --section-tint:  rgba(17, 17, 17, 0.503);
     --card-border:       rgba(255, 255, 255, 0.07);
@@ -46,7 +46,7 @@
     --border:        #2D5A3D;
     --accent:        #000000;
     --surface:       #ffffff;
-    --surface-hover: #f7f7f2;
+    --surface-hover: #ebebeb;
     --overlay-bg:    rgba(0, 0, 0, 0.45);
     --section-tint:  rgba(245, 245, 240, 0.497);
     --card-border:       rgba(0, 0, 0, 0.08);
