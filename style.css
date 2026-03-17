@@ -15,7 +15,6 @@
 /* ── Theme variables ──────────────────────────────────── */
 
 :root {
-    /* Dark mode (default) */
     --bg:            #111111;
     --grid:          rgba(139, 175, 138, 0.12);
     --header-bg:     transparent/*#111211*/;
@@ -25,7 +24,7 @@
     --surface:       #111211;/*rgba(17,17,17); this is the blocks color*/
     --surface-hover: #4a4a4a;
     --overlay-bg:    rgba(0, 0, 0, 0.55);
-    --section-tint:  rgba(17, 17, 17, 0.75);
+    --section-tint:  rgba(17, 17, 17, 0.503);
     --card-border:       rgba(255, 255, 255, 0.07);
     --card-border-hover: rgba(255, 255, 255, 0.15);
     --card-shadow:       var(--accent);
@@ -41,7 +40,7 @@
     --surface:       #ffffff;
     --surface-hover: #f7f7f2;
     --overlay-bg:    rgba(0, 0, 0, 0.45);
-    --section-tint:  rgba(245, 245, 240, 0.75);
+    --section-tint:  rgba(245, 245, 240, 0.497);
     --card-border:       rgba(0, 0, 0, 0.08);
     --card-border-hover: rgba(0, 0, 0, 0.15);
     --card-shadow:       rgba(0, 0, 0, 0.22);
@@ -73,7 +72,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -2;
 }
 
 
@@ -422,7 +421,7 @@ body {
     letter-spacing: 0.3px;
 }
 
-/* Shared base for all experiment boxes */
+/* Shared base for all experiment boxes
 .exp-box {
     display: flex;
     flex-direction: column;
@@ -434,7 +433,7 @@ body {
 }
 
 /* 1: Terminal Window — accent title bar with window dots */
-.exp-box-1 {
+/* .exp-box-1 {
     background-color: var(--surface);
     border: 2px solid var(--border);
     padding-top: 54px;
@@ -456,7 +455,7 @@ body {
 }
 
 /* 2: Dashed — clean open feel */
-.exp-box-2 {
+/*.exp-box-2 {
     background-color: var(--surface);
     border: 2px dashed var(--border);
     transition: background-color 0.25s ease, border-color 0.25s ease;
@@ -536,7 +535,7 @@ body {
     border-width: 0 40px 40px 0;
     border-color: transparent var(--bg) transparent transparent;
     z-index: 2;
-}
+} 
 
 /* ── Projects page ────────────────────────────────────────── */
 
@@ -820,7 +819,11 @@ body {
     }
 
     .safari-grad-bottom {
-        display: none;
+        /* display: none; */
+        bottom: 0;
+        height: 140px;
+        background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+        z-index: -1;
     }
 
     /* Ensure the about section and footer always render above the bottom gradient */
