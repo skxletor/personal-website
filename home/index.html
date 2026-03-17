@@ -49,22 +49,22 @@
             <div class="status-stack">
 
                 <!-- Room Light (toggleable) -->
-                <div class="status-card toggleable" id="light-card">
+                <div class="status-card disabled" id="light-card">
                     <div class="status-card-top">
                         <span class="status-card-label">Room Light</span>
                         <span class="light-dot" id="light-dot"></span>
                     </div>
                     <p class="light-status-text" id="light-text">OFF</p>
-                    <p class="status-card-note">bedroom &middot; TBD</p>
+                    <p class="status-card-note">bedroom &middot; In Progress</p>
                 </div>
 
                 <!-- Room Occupancy -->
-                <div class="status-card">
+                <div class="status-card disabled">
                     <div class="status-card-top">
                         <span class="status-card-label">Room Occupancy</span>
                     </div>
                     <p class="occupancy-count" id="occupancy-count">--</p>
-                    <p class="status-card-note">people &middot; TBD</p>
+                    <p class="status-card-note">people &middot; In Progress</p>
                 </div>
 
             </div>
@@ -83,6 +83,7 @@
 
     <script src="../topo-mesh.js"></script>
     <script>
+        /* Light switch click — disabled (in progress)
         const lightCard = document.getElementById('light-card');
         const lightDot  = document.getElementById('light-dot');
         const lightText = document.getElementById('light-text');
@@ -93,6 +94,7 @@
             lightDot.classList.toggle('on', isOn);
             lightText.textContent = isOn ? 'ON' : 'OFF';
         });
+        */
     </script>
 </body>
 </html>

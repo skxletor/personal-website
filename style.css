@@ -272,6 +272,12 @@ body {
     background-color: var(--surface-hover);
 }
 
+.status-card.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    user-select: none;
+}
+
 .status-card-top {
     display: flex;
     justify-content: space-between;
