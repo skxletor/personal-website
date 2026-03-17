@@ -24,5 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
         updateButton(next);
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.content = next === 'dark' ? '#111111' : '#F5F5F0';
     });
 });
