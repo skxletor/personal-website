@@ -25,7 +25,7 @@ function makeRand(seed) {
   };
 }
 
-const MAX_SPEED = 0.035;
+const MAX_SPEED = 0.08;
 const MAX_EDGE  = 160 * dpr;
 
 function resize() {

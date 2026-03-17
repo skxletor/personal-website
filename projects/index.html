@@ -24,6 +24,84 @@
         </nav>
     </header>
 
+    <main class="projects-page">
+        <div class="projects-grid">
+
+            <div class="project-card project-card-alpha" data-project="alpha">
+                <div class="card-inner">
+                    <span class="card-tag">Web App</span>
+                    <h2 class="card-title">Alpha</h2>
+                </div>
+            </div>
+
+            <div class="project-card project-card-beta" data-project="beta">
+                <div class="card-inner">
+                    <span class="card-tag">Tool</span>
+                    <h2 class="card-title">Beta</h2>
+                </div>
+            </div>
+
+            <div class="project-card project-card-gamma" data-project="gamma">
+                <div class="card-inner">
+                    <span class="card-tag">API</span>
+                    <h2 class="card-title">Gamma</h2>
+                </div>
+            </div>
+
+            <div class="project-card project-card-delta" data-project="delta">
+                <div class="card-inner">
+                    <span class="card-tag">Mobile</span>
+                    <h2 class="card-title">Delta</h2>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Overlay Panel -->
+    <div class="projects-overlay" id="projects-overlay">
+        <div class="projects-panel" id="projects-panel">
+            <button class="panel-close" id="panel-close">&#215;</button>
+            <span class="panel-tag" id="panel-tag"></span>
+            <h2 class="panel-title" id="panel-title"></h2>
+            <p class="panel-desc" id="panel-desc"></p>
+        </div>
+    </div>
+
     <script src="../topo-mesh.js"></script>
+    <script>
+        const projectData = {
+            alpha: { tag: 'Web App', title: 'Alpha', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
+            beta:  { tag: 'Tool',    title: 'Beta',  description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' },
+            gamma: { tag: 'API',     title: 'Gamma', description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.' },
+            delta: { tag: 'Mobile',  title: 'Delta', description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' }
+        };
+
+        const overlay    = document.getElementById('projects-overlay');
+        const panelTag   = document.getElementById('panel-tag');
+        const panelTitle = document.getElementById('panel-title');
+        const panelDesc  = document.getElementById('panel-desc');
+
+        function openPanel(id) {
+            const p = projectData[id];
+            if (!p) return;
+            panelTag.textContent   = p.tag;
+            panelTitle.textContent = p.title;
+            panelDesc.textContent  = p.description;
+            overlay.classList.add('visible');
+        }
+
+        function closePanel() {
+            overlay.classList.remove('visible');
+        }
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', () => openPanel(card.dataset.project));
+        });
+
+        document.getElementById('panel-close').addEventListener('click', closePanel);
+        overlay.addEventListener('click', e => { if (e.target === overlay) closePanel(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+    </script>
 </body>
 </html>
