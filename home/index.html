@@ -13,6 +13,7 @@
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
+
     <header id="header">
         <span>Justin Richardson</span>
         <nav id="nav">
@@ -23,13 +24,77 @@
             <button id="theme-toggle"></button>
         </nav>
     </header>
-    <!-- <div class="caution">
-        <p>Under Construction</p>
-    </div> -->
 
-    <div class="home-container">
-        <p class="coming-soon">Coming Soon</p>
-    </div>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <h1 class="hero-name">Justin<br>Richardson</h1>
+            <p class="hero-tagline">- &middot; In Progress &middot; -</p>
+        </div>
+    </section>
+
+    <!-- Bio + Live Status -->
+    <section class="bio-status-section">
+
+        <div class="bio-col">
+            <span class="section-label">About</span>
+            <p class="bio-text">
+                <!-- Update with your actual bio -->
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi consequuntur vel asperiores minima at sapiente, omnis, cupiditate perferendis illo temporibus blanditiis voluptatum nobis ducimus repudiandae molestias eligendi dolorem, quos doloremque?
+            </p>
+        </div>
+
+        <div class="status-col">
+            <span class="section-label">Live Status</span>
+            <div class="status-stack">
+
+                <!-- Room Light (toggleable) -->
+                <div class="status-card disabled" id="light-card">
+                    <div class="status-card-top">
+                        <span class="status-card-label">Room Light</span>
+                        <span class="light-dot" id="light-dot"></span>
+                    </div>
+                    <p class="light-status-text" id="light-text">OFF</p>
+                    <p class="status-card-note">bedroom &middot; In Progress</p>
+                </div>
+
+                <!-- Room Occupancy -->
+                <div class="status-card disabled">
+                    <div class="status-card-top">
+                        <span class="status-card-label">Room Occupancy</span>
+                    </div>
+                    <p class="occupancy-count" id="occupancy-count">--</p>
+                    <p class="status-card-note">people &middot; In Progress</p>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <span class="footer-copy">&copy; 2026 Justin Richardson</span>
+        <div class="footer-links">
+            <a href="../contact/">Contact</a>
+            <a href="#" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </footer>
+
     <script src="../topo-mesh.js"></script>
+    <script>
+        /* Light switch click — disabled (in progress)
+        const lightCard = document.getElementById('light-card');
+        const lightDot  = document.getElementById('light-dot');
+        const lightText = document.getElementById('light-text');
+        let isOn = false;
+
+        lightCard.addEventListener('click', () => {
+            isOn = !isOn;
+            lightDot.classList.toggle('on', isOn);
+            lightText.textContent = isOn ? 'ON' : 'OFF';
+        });
+        */
+    </script>
 </body>
 </html>
