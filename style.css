@@ -207,10 +207,10 @@ body {
 /* ── Home page ────────────────────────────────────────── */
 
 .hero {
-    min-height: calc(100svh - 50px);
+    min-height: 100svh;
     display: flex;
     align-items: center;
-    padding: 0 clamp(24px, 6vw, 100px);
+    padding: 50px clamp(24px, 6vw, 100px) 0;
     box-sizing: border-box;
 }
 
@@ -254,6 +254,14 @@ body {
     box-sizing: border-box;
     background-color: var(--section-tint);
     transition: background-color 0.25s ease;
+}
+
+:root[data-theme="dark"] .bio-status-section {
+    background-color: rgba(17, 17, 17, 0.503);
+}
+
+:root[data-theme="light"] .bio-status-section {
+    background-color: rgba(245, 245, 240, 0.497);
 }
 
 .bio-col {
