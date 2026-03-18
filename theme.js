@@ -27,9 +27,5 @@ document.addEventListener('DOMContentLoaded', function () {
         var m = document.querySelector('meta[name="theme-color"]');
         if (m) m.content = next === 'dark' ? '#111111' : '#F5F5F0';
 
-        // Directly set bg on body and bio section — mobile browsers can cache stale composited layers
-        document.body.style.backgroundColor = next === 'dark' ? '#111111' : '#F5F5F0';
-        var bio = document.querySelector('.bio-status-section');
-        if (bio) bio.style.backgroundColor = next === 'dark' ? 'rgba(17,17,17,0.503)' : 'rgba(245,245,240,0.497)';
     });
 });

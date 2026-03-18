@@ -730,16 +730,6 @@ body {
         z-index: -1; */
     }
 
-    /* Ensure the about section and footer always render above the bottom gradient */
-    .bio-status-section {
-        position: relative;
-        z-index: 1;
-    }
-
-    .site-footer {
-        position: relative;
-        z-index: 1;
-    }
 }
 
 /* ── Contact page ─────────────────────────────────────── */
