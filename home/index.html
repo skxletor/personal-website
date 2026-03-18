@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="icon" href="../imgs/tempfavicon.png">
     <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=t==='dark'?'#111111':'#F5F5F0';})();</script>
+    <script>(function(){var nav=performance.getEntriesByType('navigation')[0];var isReload=nav?nav.type==='reload':performance.navigation.type===1;if(sessionStorage.getItem('homeAnimated')&&!isReload)document.documentElement.classList.add('skip-intro');})();</script>
     <script src="../theme.js"></script>
     <script src="../bg-sync.js"></script>
 </head>
 <body>
+    <div id="page-loader"></div>
     <canvas id="bg-canvas"></canvas>
 
     <!-- Mobile Safari edge gradients -->
@@ -85,6 +87,18 @@
         </div>
     </footer>
 
+    <script>
+        (function() {
+            sessionStorage.setItem('homeAnimated', '1');
+            var loader = document.getElementById('page-loader');
+            if (!loader) return;
+            if (document.documentElement.classList.contains('skip-intro')) {
+                loader.remove();
+                return;
+            }
+            loader.addEventListener('animationend', function() { this.remove(); });
+        })();
+    </script>
     <script src="../topo-mesh.js"></script>
     <script>
         /* Light switch click — disabled (in progress)
