@@ -677,7 +677,7 @@ body {
     }
 
     .projects-page {
-        padding: 80px 20px 20px;
+        padding: 100px 20px 20px;
     }
 
     .projects-grid {
@@ -816,7 +816,7 @@ body {
 
 @media (max-width: 768px) {
     .contact-page {
-        min-height: calc(100svh - 40px);
+        min-height: 100svh;
         padding: 0 20px;
     }
 }
