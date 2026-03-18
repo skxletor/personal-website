@@ -710,7 +710,7 @@ body {
 
 @media (max-width: 768px) {
     .safari-grad-top {
-        top: 46px;
+        top: 50px;/*was 46px*/
         height: 100px;
     }
 
