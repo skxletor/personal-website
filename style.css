@@ -146,6 +146,7 @@ body {
     right: 0;
     z-index: 100;
     width: 100%;
+    box-sizing: border-box;
     height: 50px;
     background-color: var(--bg);
     color: var(--text);
@@ -427,9 +428,9 @@ body {
 /* ── Projects page ────────────────────────────────────────── */
 
 .projects-page {
-    padding: 40px;
+    padding: 90px 40px 40px;
     box-sizing: border-box;
-    min-height: calc(100svh - 50px);
+    min-height: 100svh;
 }
 
 .projects-grid {
@@ -668,7 +669,7 @@ body {
     }
 
     .projects-page {
-        padding: 20px;
+        padding: 80px 20px 20px;
     }
 
     .projects-grid {
@@ -701,15 +702,16 @@ body {
     top: 50px;
     height: 100px;
     background-color: var(--bg);
-    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.1) 75%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.1) 75%, transparent 100%);
     transition: background-color 0.25s ease;
     z-index: 50; /* below header (100), above hero content */
 }
 
 @media (max-width: 768px) {
     .safari-grad-top {
-        top: 40px;
+        top: 60px;
+        height: 100px;
     }
 
     .safari-grad-bottom {
@@ -735,10 +737,10 @@ body {
 /* ── Contact page ─────────────────────────────────────── */
 
 .contact-page {
-    min-height: calc(100svh - 50px);
+    min-height: 100svh;
     display: flex;
     align-items: center;
-    padding: 0 clamp(24px, 6vw, 100px);
+    padding: 50px clamp(24px, 6vw, 100px) 0;
     box-sizing: border-box;
 }
 

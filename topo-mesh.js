@@ -14,7 +14,8 @@ const COLOR_STOPS = [
 const dpr = window.devicePixelRatio || 1;
 let W, H;
 let points = [];
-let frameCount = 0;
+let physicsFrame = 0;
+let rafId = null;
 
 // Seeded PRNG (Mulberry32) — ensures identical initial layout on every page load
 function makeRand(seed) {
@@ -99,9 +100,17 @@ function init() {
     }
   }
 
-  // Fast-forward to the frame count saved before the last navigation
-  const framesToSkip = Math.min(frameCount, 36000);
-  for (let f = 0; f < framesToSkip; f++) stepPhysics();
+  // Fast-forward to match the current clock
+  const target = clockFrame();
+  if (target > 72000) {
+    // Epoch too old — reset so fast-forward stays fast
+    epoch = Date.now();
+    localStorage.setItem('bgEpoch', String(epoch));
+    physicsFrame = 0;
+  } else {
+    for (let f = 0; f < target; f++) stepPhysics();
+    physicsFrame = target;
+  }
 }
 
 // === Delaunay Triangulation (Bowyer-Watson) ===
@@ -164,31 +173,16 @@ function edgeDist(a, b) {
   return Math.sqrt(dx*dx + dy*dy);
 }
 
-function animate() {
-  frameCount++;
-  if (frameCount % 60 === 0) localStorage.setItem('bgFrame', String(frameCount));
-  ctx.clearRect(0, 0, W, H);
-
-  const margin = 200 * dpr;
-
-  for (const p of points) {
-
-    // Position + boundary
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.x < -margin)    p.vx =  Math.abs(p.vx);
-    if (p.x > W + margin) p.vx = -Math.abs(p.vx);
-    if (p.y < -margin)    p.vy =  Math.abs(p.vy);
-    if (p.y > H + margin) p.vy = -Math.abs(p.vy);
-
-    // Color advance
-    p.colorT += p.colorSpeed;
-    if (p.colorT >= 1) {
-      p.colorT = 0;
-      p.colorIdx = p.nextColorIdx;
-      p.nextColorIdx = (p.colorIdx + 1 + Math.floor(p.rand() * (COLOR_STOPS.length - 1))) % COLOR_STOPS.length;
-    }
+function animate(ts) {
+  // Step physics to match the clock — decoupled from frame rate for cross-page sync
+  const target = Math.round((ts + performance.timeOrigin - epoch) * 60 / 1000);
+  const steps = Math.max(0, Math.min(target - physicsFrame, 10));
+  for (let i = 0; i < steps; i++) {
+    stepPhysics();
+    physicsFrame++;
   }
+
+  ctx.clearRect(0, 0, W, H);
 
   const indexed = points.map((p, i) => ({ x: p.x, y: p.y, idx: i }));
   const triangles = triangulate(indexed);
@@ -242,13 +236,41 @@ function animate() {
     }
   }
 
-  requestAnimationFrame(animate);
+  rafId = requestAnimationFrame(animate);
 }
 
-frameCount = parseInt(localStorage.getItem('bgFrame') || '0', 10);
+// Epoch-based sync: one shared start timestamp, every page derives its frame from it.
+let epoch = parseInt(localStorage.getItem('bgEpoch') || '0', 10);
+if (!epoch) {
+  epoch = Date.now();
+  localStorage.setItem('bgEpoch', String(epoch));
+}
+
+function clockFrame() {
+  return Math.round((Date.now() - epoch) * 60 / 1000);
+}
+
 init();
 window.addEventListener('resize', () => { init(); });
-animate();
-window.addEventListener('pagehide', () => { localStorage.setItem('bgFrame', String(frameCount)); });
+rafId = requestAnimationFrame(animate);
+
+// Re-sync on bfcache restore (browser back/forward)
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted) {
+    if (rafId) cancelAnimationFrame(rafId);
+    init();
+    rafId = requestAnimationFrame(animate);
+  }
+});
+
+// Re-sync when switching back to this tab — background tabs get rAF throttled
+// so physics falls behind; re-init catches up instantly.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    if (rafId) cancelAnimationFrame(rafId);
+    init();
+    rafId = requestAnimationFrame(animate);
+  }
+});
 
 })();
