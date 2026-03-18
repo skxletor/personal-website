@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var m = document.querySelector('meta[name="theme-color"]');
         if (m) m.content = next === 'dark' ? '#111111' : '#F5F5F0';
 
-        // Force repaint on composited layers (mobile browsers can cache stale backgrounds)
+        // Directly set bg on bio section — mobile browsers can cache stale composited layers
         var bio = document.querySelector('.bio-status-section');
-        if (bio) { bio.style.opacity = '0.9999'; bio.offsetHeight; bio.style.opacity = ''; }
+        if (bio) bio.style.backgroundColor = next === 'dark' ? 'rgba(17,17,17,0.503)' : 'rgba(245,245,240,0.497)';
     });
 });
