@@ -484,6 +484,7 @@ hr {
     overflow: hidden;
     position: relative;
     transition: background-color 0.25s ease, border-color 0.3s ease;
+    transform: translateZ(0);
 }
 
 .card-inner::after {
@@ -495,6 +496,7 @@ hr {
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
 }
 
 .card-tag {
@@ -511,6 +513,7 @@ hr {
     z-index: 1;
     transform: translateY(10px);
     transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
+    will-change: transform, opacity;
 }
 
 .card-title {
@@ -524,6 +527,7 @@ hr {
     z-index: 1;
     transform: translateY(10px);
     transition: opacity 0.28s ease 0.05s, transform 0.28s ease 0.05s, color 0.25s ease;
+    will-change: transform, opacity;
 }
 
 .project-card:hover .card-inner {
@@ -746,6 +750,36 @@ hr {
         grid-row: auto;
         min-height: 150px;
     }
+
+    @keyframes card-line-in  { to { transform: scaleX(1); } }
+    @keyframes card-tag-in   { to { opacity: 0.4; transform: translateY(0); } }
+    @keyframes card-title-in { to { opacity: 1;   transform: translateY(0); } }
+
+    .project-card .card-inner::after {
+        animation: card-line-in  0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    .project-card .card-tag {
+        animation: card-tag-in   0.25s ease forwards;
+    }
+    .project-card .card-title {
+        animation: card-title-in 0.28s ease forwards;
+    }
+
+    .project-card-alpha .card-inner::after { animation-delay: 0.05s; }
+    .project-card-alpha .card-tag          { animation-delay: 0.05s; }
+    .project-card-alpha .card-title        { animation-delay: 0.10s; }
+
+    .project-card-beta .card-inner::after  { animation-delay: 0.15s; }
+    .project-card-beta .card-tag           { animation-delay: 0.15s; }
+    .project-card-beta .card-title         { animation-delay: 0.20s; }
+
+    .project-card-gamma .card-inner::after { animation-delay: 0.25s; }
+    .project-card-gamma .card-tag          { animation-delay: 0.25s; }
+    .project-card-gamma .card-title        { animation-delay: 0.30s; }
+
+    .project-card-delta .card-inner::after { animation-delay: 0.35s; }
+    .project-card-delta .card-tag          { animation-delay: 0.35s; }
+    .project-card-delta .card-title        { animation-delay: 0.40s; }
 }
 /* ── Header edge gradient ────────────────────────── */
 
