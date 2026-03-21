@@ -4,6 +4,19 @@
     document.documentElement.setAttribute('data-theme', saved);
 })();
 
+// Position the header gradient right below the header
+document.addEventListener('DOMContentLoaded', function () {
+    var header = document.getElementById('header');
+    var grad = document.querySelector('.safari-grad-top');
+    if (!header || !grad) return;
+
+    function sync() {
+        grad.style.top = header.offsetHeight + 'px';
+    }
+    sync();
+    window.addEventListener('resize', sync);
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     // Mark the active nav link for the current page
     var path = window.location.pathname;

@@ -651,10 +651,8 @@ hr {
 
 @media (max-width: 768px) {
     #bg-canvas {
-        top: -150px;
-        height: calc(100% + 300px);
-        -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-        mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+        top: 0;
+        height: 100%;
     }
 
     .caution {
@@ -793,7 +791,7 @@ hr {
 
 /* Fades from bg color down below the header */
 .safari-grad-top {
-    top: 50px;
+    top: 50px; /* fallback, overridden by JS */
     height: 45px;
     background-color: var(--bg);
     -webkit-mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,0.51) 75%, transparent 100%);
@@ -804,8 +802,10 @@ hr {
 
 @media (max-width: 768px) {
     .safari-grad-top {
-        top: 50px;/*was 46px*/
-        height: 45px;
+        /* top set by JS */
+        height: 80px;
+        -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
     }
 
 }
