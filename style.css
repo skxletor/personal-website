@@ -28,13 +28,13 @@
     --header-bg:     transparent/*#111211*/;
     --text:          #ffffff;
     --border:        transparent/*#8BAF8A*/;
-    --accent:        #0A84FF;
+    --accent:        #8BAF8A;
     --surface:       #111211;/*rgba(17,17,17); this is the blocks color*/
     --surface-hover: #222222;
     --overlay-bg:    rgba(0, 0, 0, 0.55);
     --section-tint:  rgba(17, 17, 17, 0.503);
-    --card-border:       rgba(10, 132, 255, 0.28);
-    --card-border-hover: rgba(10, 132, 255, 0.55);
+    --card-border:       rgba(139, 175, 138, 0.28);
+    --card-border-hover: rgba(139, 175, 138, 0.55);
     --card-shadow:       var(--accent);
 }
 
@@ -44,13 +44,13 @@
     --header-bg:     transparent/*#ffffff*/;
     --text:          rgb(17,17,17);
     --border:        #2D5A3D;
-    --accent:        #0A84FF;
+    --accent:        #5A8A59;
     --surface:       #ffffff;
     --surface-hover: #ebebeb;
     --overlay-bg:    rgba(0, 0, 0, 0.45);
     --section-tint:  rgba(245, 245, 240, 0.497);
-    --card-border:       rgba(10, 132, 255, 0.28);
-    --card-border-hover: rgba(10, 132, 255, 0.55);
+    --card-border:       rgba(90, 138, 89, 0.28);
+    --card-border-hover: rgba(90, 138, 89, 0.55);
     --card-shadow:       rgba(0, 0, 0, 0.22);
 }
 
@@ -319,7 +319,7 @@ body {
 
 .status-card {
     background-color: var(--surface);
-    border: 1px solid rgba(10, 132, 255, 0.28);
+    border: 1px solid rgba(139, 175, 138, 0.28);
     padding: 24px;
     box-sizing: border-box;
     transition: background-color 0.25s ease;
@@ -362,8 +362,8 @@ body {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: rgba(10, 132, 255, 0.25);
-    box-shadow: 0 0 6px rgba(10, 132, 255, 0.3);
+    background: rgba(139, 175, 138, 0.25);
+    box-shadow: 0 0 6px rgba(139, 175, 138, 0.3);
     flex-shrink: 0;
     transition: background 0.4s ease, box-shadow 0.4s ease;
 }
@@ -492,7 +492,7 @@ hr {
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 2px;
-    background: #0A84FF;
+    background: #8BAF8A;
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
