@@ -250,13 +250,22 @@ function clockFrame() {
   return Math.round((Date.now() - epoch) * 60 / 1000);
 }
 
+// On the projects page, skip the animation loop to save resources.
+// Cross-page sync is epoch-based, so other pages fast-forward on load.
+const isProjectsPage = !!document.querySelector('.projects-page');
+
 init();
 window.addEventListener('resize', () => { init(); });
-rafId = requestAnimationFrame(animate);
+if (isProjectsPage) {
+  // Draw one static frame so the mesh is visible but not animating
+  requestAnimationFrame(function(ts) { animate(ts); cancelAnimationFrame(rafId); rafId = null; });
+} else {
+  rafId = requestAnimationFrame(animate);
+}
 
 // Re-sync on bfcache restore (browser back/forward)
 window.addEventListener('pageshow', (e) => {
-  if (e.persisted) {
+  if (e.persisted && !isProjectsPage) {
     if (rafId) cancelAnimationFrame(rafId);
     init();
     rafId = requestAnimationFrame(animate);
@@ -266,7 +275,7 @@ window.addEventListener('pageshow', (e) => {
 // Re-sync when switching back to this tab — background tabs get rAF throttled
 // so physics falls behind; re-init catches up instantly.
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') {
+  if (document.visibilityState === 'visible' && !isProjectsPage) {
     if (rafId) cancelAnimationFrame(rafId);
     init();
     rafId = requestAnimationFrame(animate);
