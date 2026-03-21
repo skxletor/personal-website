@@ -1,8 +1,21 @@
 // Apply theme from localStorage immediately (also done inline in <head>, this is a fallback)
 (function () {
-    var saved = localStorage.getItem('theme') || 'light';
+    var saved = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
 })();
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Mark the active nav link for the current page
+    var path = window.location.pathname;
+    document.querySelectorAll('#nav a').forEach(function (a) {
+        var href = a.getAttribute('href');
+        if (!href) return;
+        var norm = '/' + href.replace(/^\.\.\//, '');
+        var exact = (path === norm) || (path === norm.replace(/\/$/, ''));
+        var section = norm.endsWith('/') && path.startsWith(norm) && !path.includes('.html');
+        if (exact || section) a.classList.add('active');
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function () {
     var btn = document.getElementById('theme-toggle');
@@ -16,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
     }
 
-    updateButton(document.documentElement.getAttribute('data-theme') || 'light');
+    updateButton(document.documentElement.getAttribute('data-theme') || 'dark');
 
     btn.addEventListener('click', function () {
-        var current = document.documentElement.getAttribute('data-theme') || 'light';
+        var current = document.documentElement.getAttribute('data-theme') || 'dark';
         var next = current === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);

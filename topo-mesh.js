@@ -227,7 +227,7 @@ function animate(ts) {
       const er = ((ce1.r + ce2.r) / 2) | 0;
       const eg = ((ce1.g + ce2.g) / 2) | 0;
       const eb = ((ce1.b + ce2.b) / 2) | 0;
-      ctx.strokeStyle = `rgba(75,75,75,${alpha})`;
+      ctx.strokeStyle = `rgba(10,132,255,${alpha * 0.9})`;
       ctx.lineWidth = 0.8 * dpr;
       ctx.beginPath();
       ctx.moveTo(e1.x, e1.y);

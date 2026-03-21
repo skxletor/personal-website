@@ -24,14 +24,16 @@
             <a href="../projects/">Projects</a>
             <a href="../personal/dashboard.html">Dashboard</a>
             <a href="../contact/">Contact</a>
-            <button id="theme-toggle"></button>
         </nav>
     </header>
     <main class="dashboard-page">
         <div class="dashboard-card">
             <div class="dashboard-header">
                 <h2 class="dashboard-title">Dashboard</h2>
-                <button class="logout-btn" onclick="logout()">Log Out</button>
+                <div class="dashboard-actions">
+                    <button id="theme-toggle"></button>
+                    <button class="logout-btn" onclick="logout()">Log Out</button>
+                </div>
             </div>
             <div class="dashboard-content">
                 <p style="color: var(--accent); opacity: 0.6; text-align: center;">Your content goes here.</p>
@@ -66,6 +68,12 @@
             justify-content: space-between;
         }
 
+        .dashboard-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
         .dashboard-title {
             font-family: "Space Grotesk", sans-serif;
             font-weight: 500;
@@ -91,7 +99,7 @@
 
         .logout-btn:hover {
             background: rgba(80, 80, 80, 0.35);
-            border-color: rgba(60, 60, 60, 0.85);
+            border-color: var(--accent);
         }
 
         .dashboard-content {

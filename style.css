@@ -28,13 +28,13 @@
     --header-bg:     transparent/*#111211*/;
     --text:          #ffffff;
     --border:        transparent/*#8BAF8A*/;
-    --accent:        #ffffff96;
+    --accent:        #0A84FF;
     --surface:       #111211;/*rgba(17,17,17); this is the blocks color*/
     --surface-hover: #222222;
     --overlay-bg:    rgba(0, 0, 0, 0.55);
     --section-tint:  rgba(17, 17, 17, 0.503);
-    --card-border:       rgba(255, 255, 255, 0.07);
-    --card-border-hover: rgba(255, 255, 255, 0.15);
+    --card-border:       rgba(10, 132, 255, 0.28);
+    --card-border-hover: rgba(10, 132, 255, 0.55);
     --card-shadow:       var(--accent);
 }
 
@@ -44,13 +44,13 @@
     --header-bg:     transparent/*#ffffff*/;
     --text:          rgb(17,17,17);
     --border:        #2D5A3D;
-    --accent:        #000000;
+    --accent:        #0A84FF;
     --surface:       #ffffff;
     --surface-hover: #ebebeb;
     --overlay-bg:    rgba(0, 0, 0, 0.45);
     --section-tint:  rgba(245, 245, 240, 0.497);
-    --card-border:       rgba(0, 0, 0, 0.08);
-    --card-border-hover: rgba(0, 0, 0, 0.15);
+    --card-border:       rgba(10, 132, 255, 0.28);
+    --card-border-hover: rgba(10, 132, 255, 0.55);
     --card-shadow:       rgba(0, 0, 0, 0.22);
 }
 
@@ -158,6 +158,7 @@ body {
     justify-content: space-between;
     padding-left: 10px;
     padding-right: 20px;
+    margin-bottom: 0;
     white-space: nowrap;
     transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
@@ -179,7 +180,12 @@ body {
 }
 
 #nav a:hover {
+    color: var(--accent);
     text-decoration: underline;
+}
+
+#nav a.active {
+    color: var(--accent);
 }
 
 #theme-toggle {
@@ -204,6 +210,10 @@ body {
     display: block;
 }
 
+#header > span {
+    color: var(--accent);
+}
+
 /* ── Home page ────────────────────────────────────────── */
 
 .hero {
@@ -226,6 +236,8 @@ body {
     margin: 0 0 20px 0;
     line-height: 1.0;
     letter-spacing: -3px;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 10px;
     transition: color 0.25s ease;
     animation: heroNameFade 0.7s ease 0.5s both;
 }
@@ -307,7 +319,7 @@ body {
 
 .status-card {
     background-color: var(--surface);
-    border: 1px solid rgba(139, 175, 138, 0.15);
+    border: 1px solid rgba(10, 132, 255, 0.28);
     padding: 24px;
     box-sizing: border-box;
     transition: background-color 0.25s ease;
@@ -341,8 +353,8 @@ body {
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--text);
-    opacity: 0.4;
+    color: var(--accent);
+    opacity: 0.8;
     transition: color 0.25s ease;
 }
 
@@ -350,7 +362,8 @@ body {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: rgba(139, 175, 138, 0.2);
+    background: rgba(10, 132, 255, 0.25);
+    box-shadow: 0 0 6px rgba(10, 132, 255, 0.3);
     flex-shrink: 0;
     transition: background 0.4s ease, box-shadow 0.4s ease;
 }
@@ -387,6 +400,12 @@ body {
     opacity: 0.3;
     margin: 0;
     transition: color 0.25s ease;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--accent);
+    opacity: 0.4;
 }
 
 /* ── Footer ───────────────────────────────────────────── */
@@ -427,6 +446,7 @@ body {
 
 .footer-links a:hover {
     opacity: 1;
+    color: var(--accent);
 }
 
 
@@ -461,14 +481,20 @@ body {
     box-sizing: border-box;
     background-color: var(--surface);
     border: 1px solid var(--card-border);
-    transition: background-color 0.15s ease, border-color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+    position: relative;
+    transition: background-color 0.25s ease, border-color 0.3s ease;
 }
 
-.project-card:hover .card-inner {
-    transform: translate(-4px, -4px);
-    background-color: var(--surface-hover);
-    box-shadow: 14px 14px 0 0 var(--card-shadow), 4px 4px 12px rgba(0,0,0,0.12);
-    border-color: var(--card-border-hover);
+.card-inner::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: #0A84FF;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-tag {
@@ -478,10 +504,13 @@ body {
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--text);
-    opacity: 0.4;
+    opacity: 0;
     margin: 0 0 8px 0;
     display: block;
-    transition: color 0.25s ease;
+    position: relative;
+    z-index: 1;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
 }
 
 .card-title {
@@ -490,7 +519,30 @@ body {
     font-weight: 700;
     color: var(--text);
     margin: 0;
-    transition: color 0.25s ease;
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+    transform: translateY(10px);
+    transition: opacity 0.28s ease 0.05s, transform 0.28s ease 0.05s, color 0.25s ease;
+}
+
+.project-card:hover .card-inner {
+    background-color: var(--surface-hover);
+    border-color: var(--card-border-hover);
+}
+
+.project-card:hover .card-inner::after {
+    transform: scaleX(1);
+}
+
+.project-card:hover .card-tag {
+    opacity: 0.4;
+    transform: translateY(0);
+}
+
+.project-card:hover .card-title {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .project-card-alpha { grid-column: 1 / 3; grid-row: 1 / 3; }
@@ -556,7 +608,7 @@ body {
     transition: opacity 0.15s ease, color 0.25s ease;
 }
 
-.panel-close:hover { opacity: 1; }
+.panel-close:hover { opacity: 1; color: var(--accent); }
 
 .panel-tag {
     font-family: "Space Grotesk", sans-serif;
@@ -708,10 +760,10 @@ body {
 /* Fades from bg color down below the header */
 .safari-grad-top {
     top: 50px;
-    height: 100px;
+    height: 45px;
     background-color: var(--bg);
-    -webkit-mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.1) 75%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,0.95) 15%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.1) 75%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,0.51) 75%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,0.35) 75%, transparent 100%);
     transition: background-color 0.25s ease;
     z-index: 50; /* below header (100), above hero content */
 }
@@ -719,7 +771,7 @@ body {
 @media (max-width: 768px) {
     .safari-grad-top {
         top: 50px;/*was 46px*/
-        height: 100px;
+        height: 45px;
     }
 
 }
@@ -788,6 +840,7 @@ body {
 
 .contact-email:hover {
     opacity: 1;
+    color: var(--accent);
 }
 
 .contact-email-prefix {
