@@ -53,7 +53,7 @@
             <div class="status-stack">
 
                 <!-- Room Light (toggleable) -->
-                <div class="status-card disabled" id="light-card">
+                <div class="status-card toggleable" id="light-card">
                     <div class="status-card-top">
                         <span class="status-card-label">Room Light</span>
                         <span class="light-dot" id="light-dot"></span>
@@ -99,18 +99,22 @@
     </script>
     <script src="../topo-mesh.js"></script>
     <script>
-        /* Light switch click — disabled (in progress)
         const lightCard = document.getElementById('light-card');
-        const lightDot  = document.getElementById('light-dot');
-        const lightText = document.getElementById('light-text');
-        let isOn = false;
+const lightDot  = document.getElementById('light-dot');
+const lightText = document.getElementById('light-text');
+let isOn = false;
 
-        lightCard.addEventListener('click', () => {
-            isOn = !isOn;
-            lightDot.classList.toggle('on', isOn);
-            lightText.textContent = isOn ? 'ON' : 'OFF';
-        });
-        */
+lightCard.addEventListener('click', () => {
+    isOn = !isOn;
+    lightDot.classList.toggle('on', isOn);
+    lightText.textContent = isOn ? 'ON' : 'OFF';
+
+    fetch('https://esp32-projects-node.onrender.com/command/lightswitch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ command: isOn ? 'on' : 'off' })
+    });
+});
     </script>
 
 </body>
