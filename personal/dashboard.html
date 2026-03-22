@@ -36,7 +36,14 @@
                 </div>
             </div>
             <div class="dashboard-content">
-                <p style="color: var(--accent); opacity: 0.6; text-align: center;">Your content goes here.</p>
+                <div class="status-card toggleable" id="dash-light-card">
+                    <div class="status-card-top">
+                        <span class="status-card-label">Room Light</span>
+                        <span class="light-dot" id="dash-light-dot"></span>
+                    </div>
+                    <p class="light-status-text" id="dash-light-text">OFF</p>
+                    <p class="status-card-note">bedroom &middot; Dashboard Control</p>
+                </div>
             </div>
         </div>
     </main>
@@ -132,6 +139,24 @@
         }
 
         checkAuth();
+    </script>
+    <script>
+        const dashLightCard = document.getElementById('dash-light-card');
+        const dashLightDot  = document.getElementById('dash-light-dot');
+        const dashLightText = document.getElementById('dash-light-text');
+        let dashIsOn = false;
+
+        dashLightCard.addEventListener('click', () => {
+            dashIsOn = !dashIsOn;
+            dashLightDot.classList.toggle('on', dashIsOn);
+            dashLightText.textContent = dashIsOn ? 'ON' : 'OFF';
+
+            fetch('https://esp32-projects-node.onrender.com/command/lightswitch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command: dashIsOn ? 'on' : 'off' })
+            });
+        });
     </script>
     <script src="../topo-mesh.js"></script>
 </body>

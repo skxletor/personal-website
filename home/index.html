@@ -52,14 +52,14 @@
             <span class="section-label">Live Status</span>
             <div class="status-stack">
 
-                <!-- Room Light (toggleable) -->
-                <div class="status-card toggleable" id="light-card">
+                <!-- Room Light (toggleable during 10am–10pm EST) -->
+                <div class="status-card disabled" id="light-card">
                     <div class="status-card-top">
                         <span class="status-card-label">Room Light</span>
                         <span class="light-dot" id="light-dot"></span>
                     </div>
                     <p class="light-status-text" id="light-text">OFF</p>
-                    <p class="status-card-note">bedroom &middot; In Progress</p>
+                    <p class="status-card-note" id="light-note">bedroom &middot; In Progress</p>
                 </div>
 
                 <!-- Room Occupancy -->
@@ -100,21 +100,44 @@
     <script src="../topo-mesh.js"></script>
     <script>
         const lightCard = document.getElementById('light-card');
-const lightDot  = document.getElementById('light-dot');
-const lightText = document.getElementById('light-text');
-let isOn = false;
+        const lightDot  = document.getElementById('light-dot');
+        const lightText = document.getElementById('light-text');
+        const lightNote = document.getElementById('light-note');
+        let isOn = false;
 
-lightCard.addEventListener('click', () => {
-    isOn = !isOn;
-    lightDot.classList.toggle('on', isOn);
-    lightText.textContent = isOn ? 'ON' : 'OFF';
+        function isInESTWindow() {
+            const hour = parseInt(new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric', hour12: false, timeZone: 'America/New_York'
+            }).format(new Date()));
+            return hour >= 10 && hour < 22;
+        }
 
-    fetch('https://esp32-projects-node.onrender.com/command/lightswitch', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ command: isOn ? 'on' : 'off' })
-    });
-});
+        function updateLightCardState() {
+            if (isInESTWindow()) {
+                lightCard.classList.remove('disabled');
+                lightCard.classList.add('toggleable');
+                lightNote.textContent = 'bedroom \u00b7 In Progress';
+            } else {
+                lightCard.classList.add('disabled');
+                lightCard.classList.remove('toggleable');
+                lightNote.textContent = 'available 10am\u201310pm EST';
+            }
+        }
+
+        updateLightCardState();
+
+        lightCard.addEventListener('click', () => {
+            if (!isInESTWindow()) return;
+            isOn = !isOn;
+            lightDot.classList.toggle('on', isOn);
+            lightText.textContent = isOn ? 'ON' : 'OFF';
+
+            fetch('https://esp32-projects-node.onrender.com/command/lightswitch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command: isOn ? 'on' : 'off' })
+            });
+        });
     </script>
 
 </body>
