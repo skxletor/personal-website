@@ -901,6 +901,30 @@ hr {
     display: inline;
 }
 
+.contact-linkedin {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 36px;
+    color: var(--text);
+    text-decoration: none;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(14px, 2vw, 17px);
+    font-weight: 300;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, color 0.25s ease;
+}
+
+.contact-linkedin:hover {
+    opacity: 1;
+    color: var(--accent);
+}
+
+.contact-linkedin-icon {
+    width: 18px;
+    height: 18px;
+}
+
 @media (max-width: 768px) {
     .contact-page {
         min-height: 100svh;
