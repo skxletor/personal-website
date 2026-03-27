@@ -13,8 +13,6 @@
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
-
-    <!-- Mobile Safari edge gradients -->
     <div class="safari-grad safari-grad-top"></div>
 
     <header id="header">
@@ -26,6 +24,7 @@
             <a href="../contact/">Contact</a>
         </nav>
     </header>
+
     <main class="dashboard-page">
         <div class="dashboard-card">
             <div class="dashboard-header">
@@ -35,15 +34,53 @@
                     <button class="logout-btn" onclick="logout()">Log Out</button>
                 </div>
             </div>
-            <div class="dashboard-content">
-                <div class="status-card toggleable" id="dash-light-card">
-                    <div class="status-card-top">
-                        <span class="status-card-label">Room Light</span>
-                        <span class="light-dot" id="dash-light-dot"></span>
+
+            <!-- two columns on desktop, stacked on mobile -->
+            <div class="dashboard-columns">
+
+                <!-- LEFT column: existing controls -->
+                <div class="dashboard-content">
+                    <div class="status-card toggleable" id="dash-light-card">
+                        <div class="status-card-top">
+                            <span class="status-card-label">Room Light</span>
+                            <span class="light-dot" id="dash-light-dot"></span>
+                        </div>
+                        <p class="light-status-text" id="dash-light-text">OFF</p>
+                        <p class="status-card-note">bedroom &middot; Dashboard Control</p>
                     </div>
-                    <p class="light-status-text" id="dash-light-text">OFF</p>
-                    <p class="status-card-note">bedroom &middot; Dashboard Control</p>
+
+                    <div class="status-card" id="occupancy-card">
+                        <div class="status-card-top">
+                            <span class="status-card-label">Room Occupancy</span>
+                        </div>
+                        <p class="occupancy-count" id="occupancy-count">—</p>
+                        <p class="status-card-note">bedroom &middot; Live</p>
+                    </div>
                 </div>
+
+                <!-- RIGHT column: activity log + override -->
+                <div class="dashboard-content log-panel">
+                    <div class="log-header">
+                        <span class="log-title">Activity Log</span>
+                        <span class="log-reset-note">resets at 1:00 AM</span>
+                    </div>
+
+                    <div class="log-entries" id="log-entries">
+                        <span class="log-empty">No activity yet.</span>
+                    </div>
+
+                    <div class="override-row">
+                        <input
+                            type="number"
+                            id="override-input"
+                            class="override-input"
+                            min="0"
+                            placeholder="Override count"
+                        />
+                        <button class="override-btn" onclick="sendOverride()">Set</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>
@@ -62,7 +99,7 @@
             border-radius: 12px;
             padding: 2.5rem 2.5rem 2rem;
             width: 100%;
-            max-width: 700px;
+            max-width: 1100px;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
@@ -109,11 +146,150 @@
             border-color: var(--accent);
         }
 
+        /* two columns side by side, stack on mobile */
+        .dashboard-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 700px) {
+            .dashboard-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .dashboard-content {
             border: 1px solid var(--card-border);
             border-radius: 10px;
-            padding: 2rem;
+            padding: 1.5rem;
             min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* occupancy count number */
+        .occupancy-count {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        /* log panel */
+        .log-panel {
+            justify-content: space-between;
+        }
+
+        .log-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .log-title {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 0.03em;
+        }
+
+        .log-reset-note {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 0.75rem;
+            color: var(--text);
+            opacity: 0.4;
+        }
+
+        .log-entries {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            max-height: 220px;
+            padding-right: 4px;
+        }
+
+        .log-entry {
+            display: flex;
+            gap: 0.75rem;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .log-time {
+            color: var(--text);
+            opacity: 0.4;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .log-msg {
+            color: var(--text);
+            opacity: 0.85;
+        }
+
+        .log-empty {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 0.8rem;
+            color: var(--text);
+            opacity: 0.35;
+        }
+
+        /* override row */
+        .override-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .override-input {
+            flex: 1;
+            padding: 0.45rem 0.75rem;
+            background: rgba(120, 120, 120, 0.12);
+            color: var(--text);
+            border: 1px solid rgba(100, 100, 100, 0.4);
+            border-radius: 7px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .override-input:focus {
+            border-color: var(--accent);
+        }
+
+        /* hide the number input spinner arrows */
+        .override-input::-webkit-outer-spin-button,
+        .override-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        .override-btn {
+            padding: 0.45rem 1rem;
+            background: rgba(120, 120, 120, 0.18);
+            color: var(--text);
+            border: 1px solid rgba(100, 100, 100, 0.5);
+            border-radius: 7px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .override-btn:hover {
+            background: rgba(80, 80, 80, 0.35);
+            border-color: var(--accent);
         }
     </style>
 
@@ -140,6 +316,8 @@
 
         checkAuth();
     </script>
+
+    <!-- room light toggle -->
     <script>
         const dashLightCard = document.getElementById('dash-light-card');
         const dashLightDot  = document.getElementById('dash-light-dot');
@@ -158,6 +336,60 @@
             });
         });
     </script>
+
+    <!-- occupancy WebSocket + override -->
+    <script>
+        const countEl    = document.getElementById('occupancy-count');
+        const logEl      = document.getElementById('log-entries');
+
+        // connect to the WebSocket on your Render server
+        // wss:// is the secure version of ws:// just like https:// vs http://
+        const ws = new WebSocket('wss://esp32-projects-node.onrender.com');
+
+        ws.addEventListener('message', (event) => {
+            const data = JSON.parse(event.data);
+
+            // update the count display
+            countEl.textContent = data.count;
+
+            // rebuild the log from scratch each time
+            // (server always sends the full log, not just new entries)
+            logEl.innerHTML = '';
+            if (data.log.length === 0) {
+                logEl.innerHTML = '<span class="log-empty">No activity yet.</span>';
+            } else {
+                // newest entries at the top
+                [...data.log].reverse().forEach(entry => {
+                    const row = document.createElement('div');
+                    row.className = 'log-entry';
+                    row.innerHTML = `
+                        <span class="log-time">${entry.time}</span>
+                        <span class="log-msg">${entry.message}</span>
+                    `;
+                    logEl.appendChild(row);
+                });
+            }
+        });
+
+        ws.addEventListener('close', () => {
+            countEl.textContent = '—';
+        });
+
+        function sendOverride() {
+            const input = document.getElementById('override-input');
+            const val = parseInt(input.value);
+            if (isNaN(val) || val < 0) return;
+
+            fetch('https://esp32-projects-node.onrender.com/occupancy/override', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ count: val })
+            });
+
+            input.value = '';
+        }
+    </script>
+
     <script src="../topo-mesh.js"></script>
 </body>
 </html>
