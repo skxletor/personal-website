@@ -63,12 +63,12 @@
                 </div>
 
                 <!-- Room Occupancy -->
-                <div class="status-card disabled">
+                <div class="status-card">
                     <div class="status-card-top">
                         <span class="status-card-label">Room Occupancy</span>
                     </div>
-                    <p class="occupancy-count" id="occupancy-count">--</p>
-                    <p class="status-card-note">people &middot; In Progress</p>
+                    <p class="occupancy-count" id="occupancy-count">—</p>
+                    <p class="status-card-note">bedroom &middot; Live</p>
                 </div>
 
             </div>
@@ -139,6 +139,18 @@
             });
         });
     </script>
+    <script>
+        const occCount = document.getElementById('occupancy-count');
+        const ws = new WebSocket('wss://esp32-projects-node.onrender.com');
 
+        ws.addEventListener('message', (event) => {
+            const data = JSON.parse(event.data);
+            occCount.textContent = data.count;
+        });
+
+        ws.addEventListener('close', () => {
+            occCount.textContent = '—';
+        });
+    </script>
 </body>
 </html>
