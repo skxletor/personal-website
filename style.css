@@ -519,7 +519,7 @@ hr {
 
 .card-title {
     font-family: "Space Grotesk", sans-serif;
-    font-size: clamp(16px, 2.5vw, 28px);
+    font-size: 28px;
     font-weight: 700;
     color: var(--text);
     margin: 0;
@@ -784,6 +784,7 @@ hr {
     }
     .project-card .card-title {
         animation: card-title-in 0.28s ease forwards;
+        font-size: clamp(16px, 2.5vw, 28px);
     }
 
     .project-card-alpha .card-inner::after { animation-delay: 0.05s; }
