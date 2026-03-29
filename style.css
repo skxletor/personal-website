@@ -519,7 +519,7 @@ hr {
 
 .card-title {
     font-family: "Space Grotesk", sans-serif;
-    font-size: 28px;
+    font-size: clamp(16px, 2.5vw, 28px);
     font-weight: 700;
     color: var(--text);
     margin: 0;

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!header || !grad) return;
 
     function sync() {
-        grad.style.top = header.offsetHeight + 'px';
+        grad.style.top = (header.offsetHeight - 1) + 'px';
     }
     sync();
     window.addEventListener('resize', sync);
