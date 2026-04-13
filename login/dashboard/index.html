@@ -353,38 +353,44 @@
         const countEl    = document.getElementById('occupancy-count');
         const logEl      = document.getElementById('log-entries');
 
-        // connect to the WebSocket on your Render server
-        // wss:// is the secure version of ws:// just like https:// vs http://
-        const ws = new WebSocket('wss://esp32-projects-node.onrender.com');
+        let ws;
+        let reconnectDelay = 1000;
 
-        ws.addEventListener('message', (event) => {
-            const data = JSON.parse(event.data);
+        function connectWS() {
+            ws = new WebSocket('wss://esp32-projects-node.onrender.com');
 
-            // update the count display
-            countEl.textContent = data.count;
+            ws.addEventListener('message', (event) => {
+                const data = JSON.parse(event.data);
+                reconnectDelay = 1000;
 
-            // rebuild the log from scratch each time
-            // (server always sends the full log, not just new entries)
-            logEl.innerHTML = '';
-            if (data.log.length === 0) {
-                logEl.innerHTML = '<span class="log-empty">No activity yet.</span>';
-            } else {
-                // newest entries at the top
-                [...data.log].reverse().forEach(entry => {
-                    const row = document.createElement('div');
-                    row.className = 'log-entry';
-                    row.innerHTML = `
-                        <span class="log-time">${entry.time}</span>
-                        <span class="log-msg">${entry.message}</span>
-                    `;
-                    logEl.appendChild(row);
-                });
-            }
-        });
+                countEl.textContent = data.count;
 
-        ws.addEventListener('close', () => {
-            countEl.textContent = '—';
-        });
+                logEl.innerHTML = '';
+                if (data.log.length === 0) {
+                    logEl.innerHTML = '<span class="log-empty">No activity yet.</span>';
+                } else {
+                    [...data.log].reverse().forEach(entry => {
+                        const row = document.createElement('div');
+                        row.className = 'log-entry';
+                        row.innerHTML = `
+                            <span class="log-time">${entry.time}</span>
+                            <span class="log-msg">${entry.message}</span>
+                        `;
+                        logEl.appendChild(row);
+                    });
+                }
+            });
+
+            ws.addEventListener('close', () => {
+                countEl.textContent = '—';
+                setTimeout(connectWS, reconnectDelay);
+                reconnectDelay = Math.min(reconnectDelay * 2, 30000);
+            });
+
+            ws.addEventListener('error', () => ws.close());
+        }
+
+        connectWS();
 
         function sendOverride() {
             const input = document.getElementById('override-input');
