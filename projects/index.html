@@ -66,9 +66,12 @@
     <div class="projects-overlay" id="projects-overlay">
         <div class="projects-panel" id="projects-panel">
             <button class="panel-close" id="panel-close">&#215;</button>
-            <span class="panel-tag" id="panel-tag"></span>
+            <div class="panel-meta">
+                <span class="panel-tag" id="panel-tag"></span>
+                <span class="panel-date" id="panel-date"></span>
+            </div>
             <h2 class="panel-title" id="panel-title"></h2>
-            <p class="panel-desc" id="panel-desc"></p>
+            <div class="panel-body" id="panel-body"></div>
         </div>
     </div>
 
@@ -84,23 +87,80 @@
     <script src="../topo-mesh.js"></script>
     <script>
         const projectData = {
-            alpha: { tag: 'ESP32', title: 'Room Occupancy Tracker', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-            beta:  { tag: 'Tool',    title: 'Beta',  description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' },
-            gamma: { tag: 'API',     title: 'Gamma', description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.' },
-            delta: { tag: 'Mobile',  title: 'Delta', description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' }
+            alpha: {
+                tag: 'ESP32',
+                date: 'March 2026 – Present',
+                title: 'Room Occupancy Tracker',
+                body: `
+<hr class="panel-divider">
+<div class="panel-section">
+    <span class="panel-section-label">Parts List</span>
+    <ul class="panel-parts-list">
+        <li>2× VL53L1X ToF Sensors</li>
+        <li>Breadboard</li>
+        <li>Jumper Cables</li>
+        <li>ESP32 Dev Board</li>
+        <li>100 µF Capacitor</li>
+        <li>20W USB-C Power Cable</li>
+    </ul>
+</div>
+<hr class="panel-divider">
+<p class="panel-body-text">This device was created to track the amount of people present in my dorm room at any given time. The data is collected by two ToF sensors that detect when the front door is opened and if anyone walks into or out of the room depending on which sensor triggers first. The final count is sent to my website via a websocket and displayed on the home page as well as in the partner login dashboard.</p>
+<div class="panel-row panel-row-reverse">
+    <img class="panel-img" src="../imgs/occupancy/activity-log.png" alt="Activity log dashboard">
+    <p class="panel-body-text">A short log with the given times of the sensor activity is also displayed in the partner login dashboard for debugging purposes, along with a count override in the case of any errors.</p>
+</div>
+<div class="panel-row">
+    <img class="panel-img" src="../imgs/occupancy/single-sensor.jpg" alt="Single ToF sensor on breadboard">
+    <p class="panel-body-text">I began my testing with a single ToF sensor to make sure I had the proper libraries and code to record distance with the sensors. Upon testing with two sensors, I kept running into errors that stemmed from the ESP32 being unable to deliver a steady current to the sensors, so I purchased a 100 µF capacitor to even out the flow and the sensors began to produce readings as expected. I also needed to restart each sensor using their XSHUT pins and assign a different address to each one since both sensors use the same I²C port.</p>
+</div>
+<div class="panel-row panel-row-reverse">
+    <img class="panel-img" src="../imgs/occupancy/dual-sensor.jpg" alt="Dual sensor setup on breadboard">
+    <p class="panel-body-text">Once I had both sensors outputting their live distances, I created some baseline code to sense the direction of a person entering or leaving. One main issue that persisted for quite some time was that sometimes a person entering would not be registered and the count would be off from there on out. This was mitigated by changing the sensor logic to detect once the door had swung open, decreasing the break threshold, and decreasing the time interval between each measurement.</p>
+</div>
+<div class="panel-row panel-row-reverse">
+    <p class="panel-body-text">Currently the device works with very high accuracy, save for a few exceptions, and is affixed to the wall next to the door via a 3D printed breadboard mount and command strips. The sensors can only sense one person entry/exit per cycle — if two people were to enter at the same time without closing the door between each entry, this would not be reflected by the count.</p>
+    <img class="panel-img panel-img-lg" src="../imgs/occupancy/wall-mount.jpg" alt="Device mounted on wall next to door">
+</div>
+<div class="panel-row">
+    <p class="panel-body-text">I plan on creating a more permanent construction: soldering all components to a perfboard, 3D printed housing with an exposed USB-C port for power, and adjusted sensor angle for a different door setup. I also created a rudimentary circuit schematic for the future, more permanent build.</p>
+    <img class="panel-img panel-img-lg" src="../imgs/occupancy/schematic.jpg" alt="Circuit schematic on whiteboard">
+</div>
+<p class="panel-body-text">For the future of this project, I plan on possibly creating a more advanced V2 involving a Raspberry Pi with a camera module that can much more accurately detect entries or exits than the current simple two-sensor setup.</p>`
+            },
+            beta:  {
+                tag: 'Tool',
+                date: '',
+                title: 'Beta',
+                body: '<p class="panel-body-text">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>'
+            },
+            gamma: {
+                tag: 'API',
+                date: '',
+                title: 'Gamma',
+                body: '<p class="panel-body-text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>'
+            },
+            delta: {
+                tag: 'Mobile',
+                date: '',
+                title: 'Delta',
+                body: '<p class="panel-body-text">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+            }
         };
 
         const overlay    = document.getElementById('projects-overlay');
         const panelTag   = document.getElementById('panel-tag');
+        const panelDate  = document.getElementById('panel-date');
         const panelTitle = document.getElementById('panel-title');
-        const panelDesc  = document.getElementById('panel-desc');
+        const panelBody  = document.getElementById('panel-body');
 
         function openPanel(id) {
             const p = projectData[id];
             if (!p) return;
             panelTag.textContent   = p.tag;
+            panelDate.textContent  = p.date || '';
             panelTitle.textContent = p.title;
-            panelDesc.textContent  = p.description;
+            panelBody.innerHTML    = p.body;
             overlay.classList.add('visible');
         }
 
