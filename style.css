@@ -318,6 +318,10 @@ body {
     text-decoration: none;
 }
 
+.bio-link:visited {
+    color: var(--accent);
+}
+
 .bio-link:hover {
     text-decoration: underline;
     text-decoration-thickness: 1px;
