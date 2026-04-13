@@ -605,7 +605,7 @@ hr {
     -ms-overflow-style: none;
     justify-content: center;
     overflow-y: auto;
-    padding: 40px 0;
+    padding: 8px 0;
     box-sizing: border-box;
 }
 
@@ -619,7 +619,7 @@ hr {
 }
 
 .projects-panel {
-    width: 85vw;
+    width: 95vw;
     min-height: 300px;
     background-color: var(--surface);
     border: 1px solid var(--card-border);
