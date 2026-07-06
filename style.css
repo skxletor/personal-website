@@ -564,6 +564,12 @@ hr {
     transition: filter 0.25s ease;
 }
 
+.project-card-beta .card-preview-img {
+    width: 88%;
+    height: 88%;
+    max-height: none;
+}
+
 .project-card:hover .card-preview-img {
     filter: brightness(1.3);
 }
