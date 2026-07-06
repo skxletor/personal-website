@@ -911,6 +911,15 @@ hr {
         top: 38%;
     }
 
+    /* Lay the rocket horizontal, nose to the left, to fill the mobile card */
+    .project-card-beta .card-preview-img {
+        top: 50%;
+        left: 50%;
+        width: 212%;
+        height: 212%;
+        transform: translate(-50%, -50%) rotate(-90deg);
+    }
+
     @keyframes card-line-in  { to { transform: scaleX(1); } }
     @keyframes card-tag-in   { to { opacity: 0.4; transform: translateY(0); } }
     @keyframes card-title-in { to { opacity: 1;   transform: translateY(0); } }
