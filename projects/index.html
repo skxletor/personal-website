@@ -32,7 +32,8 @@
 
             <div class="project-card project-card-alpha" data-project="alpha">
                 <div class="card-inner">
-                    <img src="../imgs/alpha-preview.png" class="card-preview-img" alt="Alpha preview">
+                    <img src="../imgs/occupancy-tracker-wireframe (black).gif" class="card-preview-img card-preview-light" alt="Occupancy tracker preview">
+                    <img src="../imgs/occupancy-tracker-wireframe (white).gif" class="card-preview-img card-preview-dark" alt="Occupancy tracker preview">
                     <span class="card-tag">ESP32</span>
                     <h2 class="card-title">Room Occupancy Tracker</h2>
                 </div>
@@ -40,7 +41,8 @@
 
             <div class="project-card project-card-beta" data-project="beta">
                 <div class="card-inner">
-                    <img src="../imgs/L1/L1-rocket.png" class="card-preview-img" alt="L1 rocket">
+                    <img src="../imgs/rocket-wireframe (black).gif" class="card-preview-img card-preview-light" alt="L1 rocket">
+                    <img src="../imgs/rocket-wireframe (white).gif" class="card-preview-img card-preview-dark" alt="L1 rocket">
                     <span class="card-tag">Tool</span>
                     <h2 class="card-title">L1 Certification Rocket</h2>
                 </div>
@@ -130,7 +132,7 @@
 <p class="panel-body-text">This project has served its purpose and worked well for my use case.</p>`
             },
             beta:  {
-                tag: 'Tool',
+                tag: 'NAR L1',
                 date: '',
                 title: 'L1 Certification Rocket',
                 body: '<p class="panel-body-text">Pending Approved Paperwork</p>'
@@ -176,6 +178,57 @@
         document.getElementById('panel-close').addEventListener('click', closePanel);
         overlay.addEventListener('click', e => { if (e.target === overlay) closePanel(); });
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+    </script>
+    <script>
+        // Desktop only: freeze the preview GIFs on their first frame and play on hover.
+        // Mobile keeps the GIFs looping as-is.
+        (function () {
+            const isDesktop = window.matchMedia('(min-width: 769px) and (hover: hover)').matches;
+            if (!isDesktop) return;
+
+            // Any card that uses animated GIF previews (occupancy tracker + rocket).
+            const cards = document.querySelectorAll('.project-card-alpha, .project-card-beta');
+
+            cards.forEach(card => {
+                const gifs = card.querySelectorAll('.card-preview-img');
+                if (!gifs.length) return;
+
+                gifs.forEach(img => {
+                    const liveSrc = img.getAttribute('src');
+                    let frozenSrc = null;
+
+                    function captureFrozenFrame() {
+                        // Draw the current (first) frame to a canvas to make a still snapshot.
+                        const probe = new Image();
+                        probe.crossOrigin = 'anonymous';
+                        probe.onload = function () {
+                            try {
+                                const canvas = document.createElement('canvas');
+                                canvas.width = probe.naturalWidth;
+                                canvas.height = probe.naturalHeight;
+                                canvas.getContext('2d').drawImage(probe, 0, 0);
+                                frozenSrc = canvas.toDataURL('image/png');
+                                img.src = frozenSrc; // show frozen frame by default
+                            } catch (e) {
+                                // If the frame can't be captured, leave the GIF playing.
+                            }
+                        };
+                        probe.src = liveSrc;
+                    }
+
+                    captureFrozenFrame();
+
+                    card.addEventListener('mouseenter', () => {
+                        // Re-assigning the live GIF src restarts it from frame 1 and plays.
+                        img.src = liveSrc;
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        if (frozenSrc) img.src = frozenSrc;
+                    });
+                });
+            });
+        })();
     </script>
 </body>
 </html>

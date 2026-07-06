@@ -565,10 +565,21 @@ hr {
 }
 
 .project-card-beta .card-preview-img {
-    width: 88%;
-    height: 88%;
+    width: 269%;
+    height: 269%;
     max-height: none;
 }
+
+.project-card-alpha .card-preview-img {
+    width: 140%;
+    height: 140%;
+    max-height: none;
+}
+
+/* Theme-swapped rocket GIFs: black for light mode, white for dark mode */
+.card-preview-dark { display: none; }
+[data-theme="dark"] .card-preview-light { display: none; }
+[data-theme="dark"] .card-preview-dark { display: block; }
 
 .project-card:hover .card-preview-img {
     filter: brightness(1.3);
