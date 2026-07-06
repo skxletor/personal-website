@@ -1,6 +1,6 @@
 // Apply theme from localStorage immediately (also done inline in <head>, this is a fallback)
 (function () {
-    var saved = localStorage.getItem('theme') || 'dark';
+    var saved = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
 })();
 
@@ -42,16 +42,16 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
     }
 
-    updateButton(document.documentElement.getAttribute('data-theme') || 'dark');
+    updateButton(document.documentElement.getAttribute('data-theme') || 'light');
 
     btn.addEventListener('click', function () {
-        var current = document.documentElement.getAttribute('data-theme') || 'dark';
+        var current = document.documentElement.getAttribute('data-theme') || 'light';
         var next = current === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
         updateButton(next);
         var m = document.querySelector('meta[name="theme-color"]');
-        if (m) m.content = next === 'dark' ? '#111111' : '#F5F5F0';
+        if (m) m.content = next === 'dark' ? '#111111' : '#FCFCFC';
 
     });
 });

@@ -24,33 +24,33 @@
 
 :root {
     --bg:            #111111;
-    --grid:          rgba(139, 175, 138, 0.12);
+    --grid:          rgba(143, 166, 204, 0.12);
     --header-bg:     transparent/*#111211*/;
     --text:          #ffffff;
-    --border:        transparent/*#8BAF8A*/;
-    --accent:        #8BAF8A;
+    --border:        transparent/*#8FA6CC*/;
+    --accent:        #8FA6CC;
     --surface:       #111211;/*rgba(17,17,17); this is the blocks color*/
     --surface-hover: #222222;
     --overlay-bg:    rgba(0, 0, 0, 0.55);
     --section-tint:  rgba(17, 17, 17, 0.503);
-    --card-border:       rgba(139, 175, 138, 0.28);
-    --card-border-hover: rgba(139, 175, 138, 0.55);
+    --card-border:       rgba(143, 166, 204, 0.28);
+    --card-border-hover: rgba(143, 166, 204, 0.55);
     --card-shadow:       var(--accent);
 }
 
 :root[data-theme="light"] {
-    --bg:            #F5F5F0;
-    --grid:          rgba(139, 175, 138, 0.31);
+    --bg:            #FCFCFC;
+    --grid:          rgba(35, 57, 91, 0.20);
     --header-bg:     transparent/*#ffffff*/;
     --text:          rgb(17,17,17);
-    --border:        #2D5A3D;
-    --accent:        #5A8A59;
+    --border:        #1A2B45;
+    --accent:        #23395B;
     --surface:       #ffffff;
     --surface-hover: #ebebeb;
     --overlay-bg:    rgba(0, 0, 0, 0.45);
-    --section-tint:  rgba(245, 245, 240, 0.497);
-    --card-border:       rgba(90, 138, 89, 0.28);
-    --card-border-hover: rgba(90, 138, 89, 0.55);
+    --section-tint:  rgba(252, 252, 252, 0.497);
+    --card-border:       rgba(35, 57, 91, 0.28);
+    --card-border-hover: rgba(35, 57, 91, 0.55);
     --card-shadow:       rgba(0, 0, 0, 0.22);
 }
 
@@ -212,6 +212,8 @@ body {
 
 #header > span {
     color: var(--accent);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 600;
 }
 
 /* ── Home page ────────────────────────────────────────── */
@@ -220,7 +222,7 @@ body {
     min-height: 100svh;
     display: flex;
     align-items: center;
-    padding: 50px clamp(24px, 6vw, 100px) 0;
+    padding: 0 clamp(24px, 6vw, 100px) 175px;
     box-sizing: border-box;
 }
 
@@ -229,9 +231,9 @@ body {
 }
 
 .hero-name {
-    font-family: "Outfit", sans-serif;
-    font-size: clamp(52px, 11vw, 130px);
-    font-weight: 900;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: clamp(44px, 9vw, 108px);
+    font-weight: 400;
     color: var(--text);
     margin: 0 0 20px 0;
     line-height: 1.0;
@@ -258,8 +260,8 @@ body {
 
 .bio-status-section {
     padding: clamp(64px, 9vw, 120px) clamp(24px, 6vw, 100px);
-    border-top: 1px solid rgba(139, 175, 138, 0.15);
-    border-bottom: 1px solid rgba(139, 175, 138, 0.15);
+    border-top: 1px solid rgba(143, 166, 204, 0.15);
+    border-bottom: 1px solid rgba(143, 166, 204, 0.15);
     display: flex;
     gap: clamp(40px, 6vw, 80px);
     align-items: stretch;
@@ -273,7 +275,7 @@ body {
 }
 
 :root[data-theme="light"] .bio-status-section {
-    background-color: rgba(245, 245, 240, 0.497);
+    background-color: rgba(252, 252, 252, 0.497);
 }
 
 .bio-col {
@@ -336,7 +338,7 @@ body {
 
 .status-card {
     background-color: var(--surface);
-    border: 1px solid rgba(139, 175, 138, 0.28);
+    border: 1px solid rgba(143, 166, 204, 0.28);
     padding: 24px;
     box-sizing: border-box;
     transition: background-color 0.25s ease;
@@ -379,15 +381,15 @@ body {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: rgba(139, 175, 138, 0.25);
-    box-shadow: 0 0 6px rgba(139, 175, 138, 0.3);
+    background: rgba(143, 166, 204, 0.25);
+    box-shadow: 0 0 6px rgba(143, 166, 204, 0.3);
     flex-shrink: 0;
     transition: background 0.4s ease, box-shadow 0.4s ease;
 }
 
 .light-dot.on {
-    background: #8BAF8A;
-    box-shadow: 0 0 10px rgba(139, 175, 138, 0.55);
+    background: #8FA6CC;
+    box-shadow: 0 0 10px rgba(143, 166, 204, 0.55);
 }
 
 .light-status-text {
@@ -428,7 +430,7 @@ hr {
 /* ── Footer ───────────────────────────────────────────── */
 
 .site-footer {
-    border-top: 1px solid rgba(139, 175, 138, 0.15);
+    border-top: 1px solid rgba(143, 166, 204, 0.15);
     background-color: var(--bg);
     padding: 32px clamp(24px, 6vw, 100px);
     display: flex;
@@ -510,7 +512,7 @@ hr {
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 2px;
-    background: #8BAF8A;
+    background: #8FA6CC;
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);

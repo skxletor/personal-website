@@ -184,6 +184,9 @@ function animate(ts) {
 
   ctx.clearRect(0, 0, W, H);
 
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const meshRGB = isLight ? '35,57,91' : '143,166,204';
+
   const indexed = points.map((p, i) => ({ x: p.x, y: p.y, idx: i }));
   const triangles = triangulate(indexed);
 
@@ -227,7 +230,7 @@ function animate(ts) {
       const er = ((ce1.r + ce2.r) / 2) | 0;
       const eg = ((ce1.g + ce2.g) / 2) | 0;
       const eb = ((ce1.b + ce2.b) / 2) | 0;
-      ctx.strokeStyle = `rgba(139,175,138,${alpha * 1})`; //this line changes the mesh lines color
+      ctx.strokeStyle = `rgba(${meshRGB},${alpha * 1})`; //this line changes the mesh lines color
       ctx.lineWidth = 0.8 * dpr;
       ctx.beginPath();
       ctx.moveTo(e1.x, e1.y);
