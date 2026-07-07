@@ -567,6 +567,12 @@ hr {
 .project-card-beta .card-preview-img {
     width: 269%;
     height: 269%;
+    /* The GIF is a 16:9 frame with a tall rocket centered in it; object-fit
+       fits the frame to the box WIDTH, so a wider card makes a TALLER rocket.
+       The card height is fixed (~660px), so on wide screens the rocket grows
+       past the top/bottom and gets clipped. Cap the box width to hold the
+       rocket at its laptop size (fitted height stays within the card). */
+    max-width: 1120px;
     max-height: none;
 }
 
