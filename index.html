@@ -2,8 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=/home/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Justin Richardson — Mechanical Engineering, Georgia Institute of Technology.">
     <title>Justin Richardson</title>
+    <link rel="icon" href="imgs/tempfavicon.png">
+    <style>
+        @font-face {
+            font-family: "Space Grotesk";
+            src: url("./fonts/SpaceGrotesk-VariableFont_wght.ttf") format("truetype");
+            font-weight: 300 700;
+            font-style: normal;
+            font-display: block;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            background: #000;
+            color: #8FA6CC;
+            font-family: "Space Grotesk", system-ui, sans-serif;
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3.5rem;
+            padding: 2rem 1rem;
+            /* the whole page is the drag surface, not just the canvas */
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+
+        body.grabbing, body.grabbing #cube { cursor: grabbing; }
+
+        /* ── Cube ─────────────────────────────────────────── */
+
+        /* Sized so the cube itself still reads at ~280px across: the renderer
+           keeps clearance inside the canvas so a swinging corner can't clip. */
+        #cube {
+            display: block;
+            width: min(42vmin, 316px);
+            height: min(42vmin, 316px);
+            /* the whole point: keep the upscale hard-edged */
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            touch-action: none;
+            animation: fade-in 1.2s ease both;
+        }
+
+        #cube.over-face { cursor: pointer; }
+
+        /* ── Caption ──────────────────────────────────────── */
+
+        .caption {
+            height: 1em;
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #46536b;
+            text-align: center;
+            user-select: none;
+            transition: color 0.25s ease;
+            animation: fade-in 1.4s 0.8s ease both;
+        }
+
+        .caption.active { color: #8FA6CC; }
+
+        /* ── Keyboard / no-JS fallback ────────────────────── */
+
+        .fallback-nav {
+            position: fixed;
+            bottom: max(1.5rem, env(safe-area-inset-bottom));
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .fallback-nav a {
+            color: #8FA6CC;
+            cursor: pointer;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            padding-bottom: 2px;
+        }
+
+        .fallback-nav a:focus-visible {
+            outline: none;
+            border-bottom-color: #8FA6CC;
+        }
+
+        /* revealed when tabbed into, or when scripting is off */
+        .fallback-nav:focus-within { opacity: 1; pointer-events: auto; }
+
+        .no-js .fallback-nav { opacity: 1; pointer-events: auto; }
+        .no-js #cube, .no-js .caption { display: none; }
+
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (prefers-reduced-motion: reduce) {
+            #cube, .caption { animation-duration: 0.01ms; }
+        }
+
+        @media (max-width: 480px) {
+            .fallback-nav { gap: 0.9rem; font-size: 0.6rem; }
+        }
+    </style>
 </head>
-<body></body>
+<body class="no-js">
+
+    <canvas id="cube" width="96" height="96" role="img"
+            aria-label="Rotatable cube menu. Use the links below to navigate."></canvas>
+
+    <p class="caption" id="cube-caption">drag to rotate &middot; click a face</p>
+
+    <nav class="fallback-nav" aria-label="Site">
+        <a href="home/">About Me</a>
+        <a href="projects/">Projects</a>
+        <a href="resume/">Resume</a>
+        <a href="login/">Partner Login</a>
+        <a href="contact/">Contact</a>
+    </nav>
+
+    <script>document.body.classList.remove('no-js');</script>
+    <script src="cube-menu.js"></script>
+</body>
 </html>

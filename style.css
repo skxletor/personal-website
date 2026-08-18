@@ -210,10 +210,16 @@ body {
     display: block;
 }
 
-#header > span {
+#header > .brand {
     color: var(--accent);
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.25s ease;
+}
+
+#header > .brand:hover {
+    opacity: 0.65;
 }
 
 /* ── Home page ────────────────────────────────────────── */
@@ -853,7 +859,7 @@ hr {
         font-size: 14px;
     }
 
-    #header > span {
+    #header > .brand {
         font-size: 14px;
         flex-shrink: 0;
         line-height: 1;
