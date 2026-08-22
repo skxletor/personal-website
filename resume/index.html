@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#FCFCFC">
-    <title>Resume | Justin Richardson</title>
+    <title>Under Construction | Justin Richardson</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="icon" href="../imgs/tempfavicon.png">
     <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=t==='dark'?'#111111':'#FCFCFC';})();</script>
@@ -28,77 +28,56 @@
         </nav>
     </header>
 
-    <main class="contact-page">
-        <div class="contact-inner">
+    <main class="construction-page">
 
-            <span class="section-label">Resume</span>
-            <h1 class="contact-name">Justin Richardson</h1>
-
-            <div class="contact-edu">
-                <p>Bachelor of Science in Mechanical Engineering &middot; Georgia Institute of Technology Expected Graduation 2029</p>
-            </div>
-
-            <div class="resume-body">
-                <section class="resume-block">
-                    <h2 class="resume-heading">Education</h2>
-                    <p class="resume-text">Georgia Institute of Technology &mdash; B.S. Mechanical Engineering, expected 2029.</p>
-                </section>
-
-                <section class="resume-block">
-                    <h2 class="resume-heading">Focus</h2>
-                    <p class="resume-text">Embedded systems, 3D modeling, and design for manufacture.</p>
-                </section>
-
-                <section class="resume-block">
-                    <h2 class="resume-heading">Selected Work</h2>
-                    <p class="resume-text">See <a href="../projects/" class="bio-link">projects</a> for current builds and write-ups.</p>
-                </section>
-            </div>
-
-            <p class="resume-note">Full resume PDF coming soon &mdash; <a href="../contact/" class="bio-link">get in touch</a> for a copy.</p>
-
+        <div class="caution">
+            <img src="../imgs/caution.gif" alt="">
+            <p>Under Construction</p>
         </div>
+
+        <p class="construction-note">
+            The resume isn't up yet. In the meantime, take a look at my
+            <a href="../projects/" class="bio-link">projects</a> or
+            <a href="../contact/" class="bio-link">get in touch</a> for a copy.
+        </p>
+
     </main>
 
     <style>
-        .resume-body {
+        .construction-page {
+            min-height: 100svh;
             display: flex;
             flex-direction: column;
-            gap: 28px;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 50px clamp(24px, 6vw, 100px);
+            box-sizing: border-box;
+            text-align: center;
         }
 
-        .resume-block {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+        /* .caution is a bare flex row in style.css — line the gif up with the
+           text and keep it from dominating the page */
+        .caution {
+            align-items: center;
+            gap: clamp(12px, 2vw, 24px);
+            flex-wrap: wrap;
         }
 
-        .resume-heading {
+        .caution img {
+            width: clamp(80px, 12vw, 130px);
+            height: auto;
+        }
+
+        .construction-note {
+            max-width: 460px;
             font-family: "Space Grotesk", sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin: 0;
-        }
-
-        .resume-text {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: clamp(15px, 2vw, 18px);
+            font-size: clamp(13px, 1.6vw, 15px);
             font-weight: 300;
+            line-height: 1.8;
             color: var(--text);
+            opacity: 0.45;
             margin: 0;
-            line-height: 1.6;
-        }
-
-        .resume-note {
-            margin-top: 40px;
-            font-family: "Space Grotesk", sans-serif;
-            font-size: clamp(12px, 1.5vw, 14px);
-            font-weight: 300;
-            color: var(--text);
-            opacity: 0.4;
         }
     </style>
 

@@ -117,6 +117,15 @@
             #cube, .caption { animation-duration: 0.01ms; }
         }
 
+        /* Phones have no hover, so every visible face shows its label at once.
+           The cube needs to be bigger for those to be legible; the caption
+           tightens up to keep it all on screen in landscape. Conditions match
+           touchLayout() in cube-menu.js — keep the two in step. */
+        @media (max-width: 640px), (hover: none), (pointer: coarse) {
+            body { gap: 1.5rem; padding: 1.5rem 1rem; }
+            #cube { width: min(66vmin, 320px); height: min(66vmin, 320px); }
+        }
+
         @media (max-width: 480px) {
             .fallback-nav { gap: 0.9rem; font-size: 0.6rem; }
         }

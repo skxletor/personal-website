@@ -34,6 +34,24 @@
 
     const ctx = canvas.getContext('2d', { alpha: false });
 
+    /* Touch has no hover, so hover-to-reveal would hide every label. On those
+       devices each visible face shows its label unhighlighted, the same way the
+       JR face always does.
+
+       Three signals, because no single one is dependable: `hover: none` misses
+       hybrids, `pointer: coarse` catches touch that reports a hover capability,
+       and the width test matches the CSS breakpoint so a narrowed desktop
+       window behaves like the phone layout it is imitating. Re-read on every
+       resize rather than latched at load, so rotating a phone or dragging a
+       window across the breakpoint takes effect. */
+    let alwaysLabel = false;
+
+    function touchLayout() {
+        const mm = window.matchMedia;
+        if (mm && (mm('(hover: none)').matches || mm('(pointer: coarse)').matches)) return true;
+        return (window.innerWidth || 0) <= 640;
+    }
+
     // The buffer tracks the displayed size so the pixels stay the same physical
     // chunk whatever the viewport does. TEX follows it, keeping the label
     // texture near 1:1 with the face — sample it down much further and the
@@ -42,6 +60,7 @@
     let masksStale = true;
 
     function resize() {
+        alwaysLabel = touchLayout();
         const w = canvas.getBoundingClientRect().width || 280;
         const next = Math.max(RES_MIN, Math.min(RES_MAX, Math.round(w / PIXEL)));
         if (next === RES) return;
@@ -67,7 +86,7 @@
     const FACES = [
         { n: [0, 0, 1],  r: [1, 0, 0],  u: [0, 1, 0],  lines: ['ABOUT', 'ME'],      href: 'home/',     label: 'About Me' },
         { n: [1, 0, 0],  r: [0, 0, -1], u: [0, 1, 0],  lines: ['PROJECTS'],         href: 'projects/', label: 'Projects' },
-        { n: [-1, 0, 0], r: [0, 0, 1],  u: [0, 1, 0],  lines: ['RESUME'],           href: 'resume/',   label: 'Resume' },
+        { n: [-1, 0, 0], r: [0, 0, 1],  u: [0, 1, 0],  lines: ['TBD'],              href: 'resume/',   label: 'TBD' },
         { n: [0, 1, 0],  r: [1, 0, 0],  u: [0, 0, -1], lines: ['PARTNER', 'LOGIN'], href: 'login/',    label: 'Partner Login' },
         { n: [0, 0, -1], r: [-1, 0, 0], u: [0, 1, 0],  lines: ['CONTACT'],          href: 'contact/',  label: 'Contact' },
         // no href, so it never highlights, never navigates, and stays out of
@@ -103,7 +122,9 @@
             for (let i = 0; i < face.lines.length; i++) {
                 widest = Math.max(widest, g.measureText(face.lines[i]).width);
             }
-            if (widest <= maxW || size <= 8) break;
+            // floor is low so a long word on a small phone shrinks to fit
+            // rather than running off the edge of its texture
+            if (widest <= maxW || size <= 5) break;
             size -= 1;
         }
         g.fillStyle = '#fff';
@@ -424,7 +445,7 @@
         for (let i = 0; i < visible.length; i++) {
             const v = visible[i];
             const hot = v.index === hovered;
-            if (hot || v.face.always) drawFace(v.face, v.quad, hot);
+            if (hot || v.face.always || alwaysLabel) drawFace(v.face, v.quad, hot);
         }
         // edges after the fill, so the outline stays a clean single pixel
         for (let i = 0; i < visible.length; i++) {
