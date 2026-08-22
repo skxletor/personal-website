@@ -865,13 +865,16 @@ hr {
         line-height: 1;
     }
 
+    /* six items don't fit one line on a phone — wrap rather than clip them,
+       which is what overflow:hidden was doing */
     #nav {
-        gap: 14px;
-        overflow: hidden;
+        gap: 6px 12px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     #nav a {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .hero {
